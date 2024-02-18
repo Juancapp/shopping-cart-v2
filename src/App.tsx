@@ -1,5 +1,11 @@
+import Navbar from "./components/assets/Navbar";
+
 function App() {
-  return <></>;
+  return (
+    <div className="w-screen h-screen">
+      <Navbar />
+    </div>
+  );
 }
 
 export default App;
