@@ -2,7 +2,7 @@ function Select<T extends string | number | readonly string[] | undefined>({
   name,
   label,
   options,
-  handleChange,
+  onChange,
 }: {
   name: string;
   label: string;
@@ -10,7 +10,7 @@ function Select<T extends string | number | readonly string[] | undefined>({
     value: T;
     title: string;
   }[];
-  handleChange: () => void;
+  onChange: () => void;
 }) {
   return (
     <div className="w-1/3">
@@ -20,7 +20,7 @@ function Select<T extends string | number | readonly string[] | undefined>({
           className="bg-inherit ml-3 text-white p-2 border-solid rounded-sm cursor-pointer w-3/4"
           name={name}
           id={name}
-          onChange={handleChange}
+          onChange={onChange}
         >
           {options.map((option, index) => {
             return (

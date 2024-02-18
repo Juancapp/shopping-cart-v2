@@ -3,6 +3,7 @@
 //   ShoppingCartIcon,
 // } from "@heroicons/react/24/outline";
 // import Select from "../Select";
+// import Searchbar from "../Searchbar";
 
 // function Navbar() {
 //   return (
@@ -14,7 +15,7 @@
 //         </div>
 //         <ShoppingCartIcon />
 //       </div>
-//       <search></search>
+//       <Searchbar />
 //       <div>
 //         <Select />
 //         <Select />
