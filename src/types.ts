@@ -10,3 +10,9 @@ export enum Category {
   WOMENS_CLOTHING = `women's clothing`,
   JEWERLERY = "jewerlery",
 }
+
+export enum Order {
+  DEFAULT = "default",
+  DESCENDENT = "desc",
+  ASCENDENT = "ascendent",
+}

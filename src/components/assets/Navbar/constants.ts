@@ -1,4 +1,4 @@
-import { Category } from "../../../types";
+import { Category, Order } from "../../../types";
 
 export const categoryOptions = [
   {
@@ -20,5 +20,20 @@ export const categoryOptions = [
   {
     value: Category.ELECTRONICS,
     title: "Electronics",
+  },
+];
+
+export const orderOptions = [
+  {
+    value: Order.DEFAULT,
+    title: "Default",
+  },
+  {
+    value: Order.ASCENDENT,
+    title: "Ascendent",
+  },
+  {
+    value: Order.DESCENDENT,
+    title: "Descendent",
   },
 ];

@@ -6,7 +6,7 @@ import Select from "../Select";
 import Searchbar from "../Searchbar";
 import Radio from "../Radio";
 import { OrderBy } from "../../../types";
-import { categoryOptions } from "./constants";
+import { categoryOptions, orderOptions } from "./constants";
 
 function Navbar() {
   return (
@@ -19,7 +19,7 @@ function Navbar() {
         <ShoppingCartIcon className="text-white w-8" />
       </div>
       <Searchbar />
-      <div>
+      <div className="flex flex-col justify-center gap-2 md:gap-0 items-center md:flex-row">
         <Select
           label="Category"
           name="category"
@@ -28,7 +28,14 @@ function Navbar() {
             console.log(e.target.value)
           }
         />
-        {/* <Select /> */}
+        <Select
+          label="Order"
+          name="order"
+          options={orderOptions}
+          onChange={(e: { target: { value: any } }) =>
+            console.log(e.target.value)
+          }
+        />
         <Radio values={[OrderBy.PRICE, OrderBy.RATE]} name="orderBy" />
       </div>
     </div>

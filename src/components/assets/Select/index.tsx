@@ -12,11 +12,11 @@ function Select<T extends string | number | readonly string[] | undefined>({
   }[];
 }) {
   return (
-    <div className="w-1/3">
-      <label htmlFor={name} className="text-white">
+    <div className="w-full md:w-1/3">
+      <label htmlFor={name} className="text-white flex items-center">
         {label}:
         <select
-          className="bg-blue-950 ml-3 text-white p-2 border-2 rounded cursor-pointer w-3/4"
+          className="bg-blue-950 ml-3 text-white p-2 border-2 rounded cursor-pointer w-full md:w-3/4"
           name={name}
           id={name}
           onChange={onChange}

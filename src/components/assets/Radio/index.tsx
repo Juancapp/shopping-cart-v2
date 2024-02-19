@@ -10,7 +10,7 @@ function Radio(
   console.log(values);
 
   return (
-    <div className="text-white text-lg flex gap-4 w-1/3">
+    <div className="text-white text-lg flex gap-4 w-full md:w-1/3 self-start md:self-center">
       <p>Order by:</p>
       {values.map((value, index) => {
         return (
