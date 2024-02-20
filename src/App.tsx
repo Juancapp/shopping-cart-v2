@@ -1,9 +1,12 @@
+import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/assets/Navbar";
 
 function App() {
   return (
     <div className="w-screen h-screen">
-      <Navbar />
+      <BrowserRouter>
+        <Navbar />
+      </BrowserRouter>
     </div>
   );
 }
