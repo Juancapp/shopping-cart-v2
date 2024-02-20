@@ -11,7 +11,7 @@ export const categoryOptions = [
   },
   {
     value: Category.WOMENS_CLOTHING,
-    title: "Men's Clothing",
+    title: "Women's Clothing",
   },
   {
     value: Category.JEWERLERY,

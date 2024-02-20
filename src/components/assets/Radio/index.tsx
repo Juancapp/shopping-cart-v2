@@ -7,8 +7,6 @@ function Radio(
 ) {
   const { onChange, name, values } = props;
 
-  console.log(values);
-
   return (
     <div className="text-white text-lg flex gap-4 w-full md:w-1/3 self-start md:self-center">
       <p>Order by:</p>
