@@ -1,33 +1,39 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
-import { Order } from "../../../types";
+import { useState } from "react";
 
-function Searchbar() {
+function Searchbar(
+  props: React.HTMLProps<HTMLButtonElement> &
+    React.InputHTMLAttributes<HTMLInputElement> & {
+      handleClick: (arg0: string) => void;
+    }
+) {
+  const { handleClick } = props;
   const [inputValue, setInputValue] = useState("");
-  const searchParams = useSearchParams();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
 
-  const param = queryParams.get(inputValue);
+  // const [inputValue, setInputValue] = useState("");
+  // const searchParams = useSearchParams();
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
 
-  const order = queryParams.get("orderBy");
+  // const param = queryParams.get(inputValue);
 
-  useEffect(() => {
-    searchParams[1](queryParams);
-  }, [location.search]);
+  // const order = queryParams.get("orderBy");
 
-  const handleClick = (value: string) => {
-    queryParams.set("title", value);
+  // useEffect(() => {
+  //   searchParams[1](queryParams);
+  // }, [location.search]);
 
-    if (!value.length) {
-      queryParams.delete("title");
-    }
+  // const handleClick = (value: string) => {
+  //   queryParams.set("title", value);
 
-    if (order === Order.DEFAULT) {
-      queryParams.delete("orderBy");
-    }
-  };
+  //   if (!value.length) {
+  //     queryParams.delete("title");
+  //   }
+
+  //   if (order === Order.DEFAULT) {
+  //     queryParams.delete("orderBy");
+  //   }
+  // };
 
   return (
     <div className="flex justify-between align-middle px-0 pl-1 rounded-sm border-solid border-whites border-1 bg-white h-10 box-border">
@@ -36,7 +42,7 @@ function Searchbar() {
         className="text-md w-full h-full border-none outline-none"
         placeholder="Search product..."
         onChange={(e) => setInputValue(e.target.value)}
-        value={param ?? inputValue}
+        // value={param ?? inputValue}
       />
       <button
         onClick={() => handleClick(inputValue)}
