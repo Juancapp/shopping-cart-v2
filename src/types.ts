@@ -8,11 +8,24 @@ export enum Category {
   ELECTRONICS = "electronics",
   MENS_CLOTHING = `men's clothing`,
   WOMENS_CLOTHING = `women's clothing`,
-  JEWERLERY = "jewerlery",
+  JEWELERY = "jewelery",
 }
 
 export enum Order {
   DEFAULT = "default",
   DESCENDENT = "desc",
-  ASCENDENT = "ascendent",
+  ASCENDENT = "asc",
+}
+
+export interface Product {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+}
+
+export interface ProductData {
+  page: number;
+  totalPages: number;
+  products: Product[];
 }

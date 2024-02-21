@@ -1,22 +1,32 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { Order } from "../../../types";
 
 function Searchbar() {
   const [inputValue, setInputValue] = useState("");
   const searchParams = useSearchParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+
   const param = queryParams.get(inputValue);
 
+  const order = queryParams.get("orderBy");
+
+  useEffect(() => {
+    searchParams[1](queryParams);
+  }, [location.search]);
+
   const handleClick = (value: string) => {
-    queryParams.set("name", value);
+    queryParams.set("title", value);
 
     if (!value.length) {
-      queryParams.delete("name");
+      queryParams.delete("title");
     }
 
-    searchParams[1](queryParams);
+    if (order === Order.DEFAULT) {
+      queryParams.delete("orderBy");
+    }
   };
 
   return (

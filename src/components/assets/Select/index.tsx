@@ -1,5 +1,5 @@
 import { useLocation, useSearchParams } from "react-router-dom";
-import { Category, Order } from "../../../types";
+import { Category, Order, OrderBy } from "../../../types";
 
 function Select<T extends string | number | readonly string[] | undefined>({
   name,
@@ -19,10 +19,22 @@ function Select<T extends string | number | readonly string[] | undefined>({
   const param = queryParams.get(name);
 
   const handleChange = (value: string) => {
-    if (value !== Category.ALL && value !== Order.DEFAULT) {
-      queryParams.set(name, value);
-    } else {
-      queryParams.delete(name);
+    if (name === "category") {
+      if (value !== Category.ALL) {
+        queryParams.set("category", value);
+      } else {
+        queryParams.delete("category");
+      }
+    } else if (name === "order") {
+      if (value !== Order.DEFAULT) {
+        queryParams.set("order", value);
+        if (!queryParams.get("orderBy")) {
+          queryParams.set("orderBy", OrderBy.PRICE);
+        }
+      } else {
+        queryParams.delete("order");
+        queryParams.delete("orderBy");
+      }
     }
 
     searchParams[1](queryParams);
