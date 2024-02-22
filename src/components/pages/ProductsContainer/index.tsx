@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useProductsQuery } from "../../../services/products/query";
 import { ProductData } from "../../../types";
 import { useEffect, useState } from "react";
+import Card from "../../assets/Card";
 
 function ProductsContainer() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,22 +42,8 @@ function ProductsContainer() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 box-content">
-          {data?.products.map((product) => {
-            return (
-              <div
-                className="hover:shadow-xl cursor-pointer px-10 py-3 flex flex-col items-center"
-                key={product.id}
-              >
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="object-contain w-full h-2/3 box-content"
-                />
-                <p className="font-bold text-center">{product.title}</p>
-                <p className="font-bold text-center">${product.price}</p>
-                <p>Rating: {product?.rating?.rate}</p>
-              </div>
-            );
+          {data?.products.map((product, index) => {
+            return <Card {...product} key={index} />;
           })}
         </div>
       )}

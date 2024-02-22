@@ -10,7 +10,7 @@ function Radio(
 
   return (
     <div
-      className={`text-white text-lg flex gap-4 w-full md:w-1/3 self-start md:self-center  ${
+      className={`text-white text-sm flex gap-4 w-full md:w-1/3 self-start md:self-center  ${
         disabled && "cursor-not-allowed"
       }`}
     >

@@ -1,4 +1,3 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
 function Searchbar(
@@ -16,19 +15,32 @@ function Searchbar(
   }, []);
 
   return (
-    <div className="flex justify-between align-middle px-0 pl-1 rounded-sm border-solid border-whites border-1 bg-white h-10 box-border">
+    <div className="flex-1 mx-4 flex">
       <input
         type="text"
-        className="text-md w-full h-full border-none outline-none caret-pink-500"
+        className="font-light w-full bg-gray-800 rounded-l-md border border-gray-700 focus:border-gray-500 focus:ring-0 text-white px-4 py-2"
         placeholder="Search product..."
         onChange={(e) => setInputValue(e.target.value)}
         value={inputValue}
       />
       <button
         onClick={() => handleClick(inputValue)}
-        className="h-full w-14 bg-gray-900 flex justify-center items-center"
+        className="bg-gray-800 rounded-r-md border border-gray-700 focus:border-gray-500 focus:ring-0 text-white px-4 py-2"
       >
-        <MagnifyingGlassIcon className="text-white w-8" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-5.172-5.172M19 10a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
       </button>
     </div>
   );

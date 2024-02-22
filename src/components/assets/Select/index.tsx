@@ -15,10 +15,10 @@ function Select<T extends string | number | readonly string[] | undefined>({
 }) {
   return (
     <div className="w-full md:w-1/3">
-      <label htmlFor={name} className="text-white flex items-center">
+      <label htmlFor={name} className="text-white text-sm flex items-center">
         {label}:
         <select
-          className="bg-blue-950 ml-3 text-white p-2 border-2 rounded cursor-pointer w-full md:w-3/4"
+          className="bg-gray-800 rounded-md border border-gray-700 focus:border-gray-500 focus:ring-0 text-white px-4 py-2 appearance-none w-full md:w-3/4 ml-3"
           name={name}
           id={name}
           onChange={onChange}
@@ -29,6 +29,7 @@ function Select<T extends string | number | readonly string[] | undefined>({
                 key={index}
                 value={option.value}
                 selected={defaultValue === option.value}
+                className="text-sm"
               >
                 {option.title}
               </option>

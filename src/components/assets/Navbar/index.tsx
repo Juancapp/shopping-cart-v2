@@ -5,10 +5,7 @@ import Radio from "../Radio";
 import { Category, Order, OrderBy } from "../../../types";
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import {
-  ShoppingCartIcon,
-  BuildingStorefrontIcon,
-} from "@heroicons/react/16/solid";
+import Cart from "../Cart";
 
 function Navbar() {
   const searchParams = useSearchParams();
@@ -81,13 +78,10 @@ function Navbar() {
   }, [filters]);
 
   return (
-    <div className="bg-blue-950 p-4 flex flex-col gap-2">
+    <div className="bg-gray-900 p-4 flex flex-col gap-2">
       <div className="flex justify-between">
-        <div className="flex">
-          <BuildingStorefrontIcon className="text-white w-8" />
-          <p className="text-white">Cocoa</p>
-        </div>
-        <ShoppingCartIcon className="text-white w-8" />
+        <p className="text-white font-bold">COCOA</p>
+        <Cart />
       </div>
       <Searchbar
         handleClick={handleSearch}
