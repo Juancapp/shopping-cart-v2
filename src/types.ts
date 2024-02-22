@@ -22,6 +22,11 @@ export interface Product {
   title: string;
   description: string;
   price: number;
+  rating: {
+    rate: number;
+    count: number;
+  };
+  image: string;
 }
 
 export interface ProductData {

@@ -1,7 +1,3 @@
-import {
-  BuildingStorefrontIcon,
-  ShoppingCartIcon,
-} from "@heroicons/react/24/outline";
 import Select from "../Select";
 import Searchbar from "../Searchbar";
 import { categoryOptions, orderOptions } from "./constants";
@@ -9,18 +5,25 @@ import Radio from "../Radio";
 import { Category, Order, OrderBy } from "../../../types";
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
+import {
+  ShoppingCartIcon,
+  BuildingStorefrontIcon,
+} from "@heroicons/react/16/solid";
 
 function Navbar() {
-  const [filters, setFilters] = useState({
-    title: "",
-    category: Category.ALL,
-    order: Order.DEFAULT,
-    orderBy: OrderBy.PRICE,
-  });
-
   const searchParams = useSearchParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const categoryParam = queryParams.get("category");
+  const orderParam = queryParams.get("order");
+  const orderByParam = queryParams.get("orderBy");
+
+  const [filters, setFilters] = useState({
+    title: "",
+    category: categoryParam || Category.ALL,
+    order: orderParam || Order.DEFAULT,
+    orderBy: orderByParam || OrderBy.PRICE,
+  });
 
   const handleSearch = (value: string) => {
     setFilters((prevValue) => {
@@ -73,6 +76,7 @@ function Navbar() {
       }
     }
 
+    queryParams.set("page", (1).toString());
     searchParams[1](queryParams);
   }, [filters]);
 
@@ -85,26 +89,31 @@ function Navbar() {
         </div>
         <ShoppingCartIcon className="text-white w-8" />
       </div>
-      <Searchbar handleClick={handleSearch} />
+      <Searchbar
+        handleClick={handleSearch}
+        initialValue={queryParams.get("title")!}
+      />
       <div className="flex flex-col justify-center gap-2 md:gap-0 items-center md:flex-row">
         <Select
           label="Category"
           name="category"
           options={categoryOptions}
           onChange={(e) => handleCategorySelect(e.target.value as Category)}
+          defaultValue={categoryParam as Category}
         />
         <Select
           label="Order"
           name="order"
           options={orderOptions}
           onChange={(e) => handleOrderSelect(e.target.value as Order)}
+          defaultValue={orderParam as Order}
         />
         <Radio
           values={[OrderBy.PRICE, OrderBy.RATE]}
           name="orderBy"
           onChange={(e) => handleRadio(e.target.value as OrderBy)}
           disabled={filters.order === Order.DEFAULT}
-          selectedValue={filters.orderBy}
+          selectedValue={filters.orderBy as OrderBy}
         />
       </div>
     </div>

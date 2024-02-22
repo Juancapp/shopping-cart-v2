@@ -1,48 +1,28 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Searchbar(
   props: React.HTMLProps<HTMLButtonElement> &
     React.InputHTMLAttributes<HTMLInputElement> & {
       handleClick: (arg0: string) => void;
+      initialValue: string;
     }
 ) {
-  const { handleClick } = props;
+  const { handleClick, initialValue } = props;
   const [inputValue, setInputValue] = useState("");
 
-  // const [inputValue, setInputValue] = useState("");
-  // const searchParams = useSearchParams();
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-
-  // const param = queryParams.get(inputValue);
-
-  // const order = queryParams.get("orderBy");
-
-  // useEffect(() => {
-  //   searchParams[1](queryParams);
-  // }, [location.search]);
-
-  // const handleClick = (value: string) => {
-  //   queryParams.set("title", value);
-
-  //   if (!value.length) {
-  //     queryParams.delete("title");
-  //   }
-
-  //   if (order === Order.DEFAULT) {
-  //     queryParams.delete("orderBy");
-  //   }
-  // };
+  useEffect(() => {
+    if (initialValue) setInputValue(initialValue);
+  }, []);
 
   return (
     <div className="flex justify-between align-middle px-0 pl-1 rounded-sm border-solid border-whites border-1 bg-white h-10 box-border">
       <input
         type="text"
-        className="text-md w-full h-full border-none outline-none"
+        className="text-md w-full h-full border-none outline-none caret-pink-500"
         placeholder="Search product..."
         onChange={(e) => setInputValue(e.target.value)}
-        // value={param ?? inputValue}
+        value={inputValue}
       />
       <button
         onClick={() => handleClick(inputValue)}

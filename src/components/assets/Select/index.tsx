@@ -3,6 +3,7 @@ function Select<T extends string | number | readonly string[] | undefined>({
   label,
   options,
   onChange,
+  defaultValue,
 }: React.InputHTMLAttributes<HTMLSelectElement> & {
   name: string;
   label: string;
@@ -10,34 +11,8 @@ function Select<T extends string | number | readonly string[] | undefined>({
     value: T;
     title: string;
   }[];
+  defaultValue: string;
 }) {
-  // const searchParams = useSearchParams();
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  // const param = queryParams.get(name);
-
-  // const handleChange = (value: string) => {
-  //   if (name === "category") {
-  //     if (value !== Category.ALL) {
-  //       queryParams.set("category", value);
-  //     } else {
-  //       queryParams.delete("category");
-  //     }
-  //   } else if (name === "order") {
-  //     if (value !== Order.DEFAULT) {
-  //       queryParams.set("order", value);
-  //       if (!queryParams.get("orderBy")) {
-  //         queryParams.set("orderBy", OrderBy.PRICE);
-  //       }
-  //     } else {
-  //       queryParams.delete("order");
-  //       queryParams.delete("orderBy");
-  //     }
-  //   }
-
-  //   searchParams[1](queryParams);
-  // };
-
   return (
     <div className="w-full md:w-1/3">
       <label htmlFor={name} className="text-white flex items-center">
@@ -47,11 +22,14 @@ function Select<T extends string | number | readonly string[] | undefined>({
           name={name}
           id={name}
           onChange={onChange}
-          defaultValue={options[0].value}
         >
           {options.map((option, index) => {
             return (
-              <option key={index} value={option.value}>
+              <option
+                key={index}
+                value={option.value}
+                selected={defaultValue === option.value}
+              >
                 {option.title}
               </option>
             );
