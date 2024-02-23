@@ -1,13 +1,19 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/assets/Navbar";
 import ProductsContainer from "./components/pages/ProductsContainer";
+import RedirectToHome from "./components/redirect";
+import ProductPage from "./components/pages/Product";
 
 function App() {
   return (
-    <div className="w-full h-full font-sans">
+    <div className="font-sans h-full w-full">
       <BrowserRouter>
         <Navbar />
-        <ProductsContainer />
+        <Routes>
+          <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/home" element={<ProductsContainer />} />
+          <Route path="/" element={<RedirectToHome />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

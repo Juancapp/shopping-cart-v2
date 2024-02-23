@@ -10,7 +10,10 @@ const api = axios.create({
   },
 });
 
-export const getRequest = async (apiRoute: string, params: object) => {
-  const response = await api.get(apiRoute, { params });
+export const getRequest = async <T>(apiRoute: string, params?: object) => {
+  const response = params
+    ? await api.get<T>(apiRoute, { params })
+    : await api.get<T>(apiRoute);
+
   return response;
 };

@@ -18,7 +18,7 @@ export enum Order {
 }
 
 export interface Product {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   price: number;

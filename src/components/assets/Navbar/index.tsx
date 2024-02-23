@@ -46,7 +46,7 @@ function Navbar() {
     });
   };
 
-  useEffect(() => {
+  const setQueryParams = () => {
     let arrFilters = Object.entries(filters);
 
     for (let i = 0; i < arrFilters.length; i++) {
@@ -74,42 +74,53 @@ function Navbar() {
     }
 
     queryParams.set("page", (1).toString());
+
     searchParams[1](queryParams);
+  };
+
+  useEffect(() => {
+    if (location.pathname === "/home") {
+      setQueryParams();
+    }
   }, [filters]);
 
   return (
     <div className="bg-gray-900 p-4 flex flex-col gap-2">
       <div className="flex justify-between">
-        <p className="text-white font-bold">COCOA</p>
+        <p className="text-white font-bold">CC</p>
         <Cart />
       </div>
-      <Searchbar
-        handleClick={handleSearch}
-        initialValue={queryParams.get("title")!}
-      />
-      <div className="flex flex-col justify-center gap-2 md:gap-0 items-center md:flex-row">
-        <Select
-          label="Category"
-          name="category"
-          options={categoryOptions}
-          onChange={(e) => handleCategorySelect(e.target.value as Category)}
-          defaultValue={categoryParam as Category}
-        />
-        <Select
-          label="Order"
-          name="order"
-          options={orderOptions}
-          onChange={(e) => handleOrderSelect(e.target.value as Order)}
-          defaultValue={orderParam as Order}
-        />
-        <Radio
-          values={[OrderBy.PRICE, OrderBy.RATE]}
-          name="orderBy"
-          onChange={(e) => handleRadio(e.target.value as OrderBy)}
-          disabled={filters.order === Order.DEFAULT}
-          selectedValue={filters.orderBy as OrderBy}
-        />
-      </div>
+      {location.pathname === "/home" && (
+        <>
+          <Searchbar
+            handleClick={handleSearch}
+            initialValue={queryParams.get("title")!}
+          />
+          <div className="flex flex-col justify-center gap-2 md:gap-0 items-center md:flex-row">
+            <Select
+              label="Category"
+              name="category"
+              options={categoryOptions}
+              onChange={(e) => handleCategorySelect(e.target.value as Category)}
+              defaultValue={categoryParam as Category}
+            />
+            <Select
+              label="Order"
+              name="order"
+              options={orderOptions}
+              onChange={(e) => handleOrderSelect(e.target.value as Order)}
+              defaultValue={orderParam as Order}
+            />
+            <Radio
+              values={[OrderBy.PRICE, OrderBy.RATE]}
+              name="orderBy"
+              onChange={(e) => handleRadio(e.target.value as OrderBy)}
+              disabled={filters.order === Order.DEFAULT}
+              selectedValue={filters.orderBy as OrderBy}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
