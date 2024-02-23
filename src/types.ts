@@ -1,6 +1,6 @@
 export enum OrderBy {
   PRICE = "price",
-  RATE = "rate",
+  RATE = "rating.rate",
 }
 
 export enum Category {

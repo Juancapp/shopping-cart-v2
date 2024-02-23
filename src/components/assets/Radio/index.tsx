@@ -22,10 +22,10 @@ function Radio(
             key={index}
             className={`${disabled && "cursor-not-allowed"}`}
           >
-            {value[0].toUpperCase() + value.slice(1)}
+            {index === 0 ? "Price" : "Rate"}
             <input
               type="radio"
-              className="ml-1 accent-pink-500"
+              className="ml-1"
               id={value}
               name={name}
               key={index}

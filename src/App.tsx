@@ -4,7 +4,7 @@ import ProductsContainer from "./components/pages/ProductsContainer";
 
 function App() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full font-sans">
       <BrowserRouter>
         <Navbar />
         <ProductsContainer />

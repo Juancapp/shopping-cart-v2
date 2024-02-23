@@ -33,8 +33,8 @@ function ProductsContainer() {
 
   return (
     <div className="px-[5%] py-20 flex flex-col gap-20 items-center">
-      <h1 className="text-5xl w-fit">Products</h1>
-      {query.isFetching ? (
+      <h1 className="text-5xl font-extrabold w-fit">PRODUCTS</h1>
+      {query.isLoading ? (
         <div className="flex space-x-2 animate-pulse">
           <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
           <div className="w-3 h-3 bg-gray-500 rounded-full"></div>

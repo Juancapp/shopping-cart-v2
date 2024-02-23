@@ -2,6 +2,11 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@font-face {
+  font-family: "Helvetica";
+  src: url("./fonts/FreeSans.otf") format("opentype");
+}
+
 #root {
   width: 100%;
   height: 100%;
