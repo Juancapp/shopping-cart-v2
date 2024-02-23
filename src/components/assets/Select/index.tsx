@@ -22,15 +22,11 @@ function Select<T extends string | number | readonly string[] | undefined>({
           name={name}
           id={name}
           onChange={onChange}
+          defaultValue={defaultValue}
         >
           {options.map((option, index) => {
             return (
-              <option
-                key={index}
-                value={option.value}
-                selected={defaultValue === option.value}
-                className="text-sm"
-              >
+              <option key={index} value={option.value} className="text-sm">
                 {option.title}
               </option>
             );

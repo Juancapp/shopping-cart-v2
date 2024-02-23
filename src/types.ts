@@ -29,6 +29,12 @@ export interface Product {
   image: string;
 }
 
+export interface User {
+  id: string;
+  name: string;
+  products: { quantity: number; product: Product }[];
+}
+
 export interface ProductData {
   page: number;
   totalPages: number;

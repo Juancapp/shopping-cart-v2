@@ -12,7 +12,7 @@ export const useProductsQuery = (params: object) => {
 
 export const useProduct = (id: string) => {
   return useQuery({
-    queryFn: () => getRequest<Product>(`${url}/products/${id}`),
+    queryFn: async () => await getRequest<Product>(`${url}/products/${id}`),
     queryKey: ["products", id],
   });
 };
