@@ -2,6 +2,8 @@ import axios from "axios";
 
 export const url = import.meta.env.VITE_APP_API_URL;
 
+console.log("URL del .env :", url);
+
 const api = axios.create({
   baseURL: url,
   timeout: 15000,
@@ -11,6 +13,9 @@ const api = axios.create({
 });
 
 export const getRequest = async <T>(apiRoute: string, params?: object) => {
+  console.log("url pasada", apiRoute);
+  console.log("params", params);
+
   const response = params
     ? await api.get<T>(apiRoute, { params })
     : await api.get<T>(apiRoute);

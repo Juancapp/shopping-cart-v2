@@ -3,6 +3,8 @@ import { getRequest, url } from "../../config/api";
 import { Product } from "../../types";
 
 export const useProductsQuery = (params: object) => {
+  console.log("url a pasar", `${url}/products`, params);
+
   return useQuery({
     queryFn: () => getRequest(`${url}/products`, params),
     queryKey: ["products", { params }],
