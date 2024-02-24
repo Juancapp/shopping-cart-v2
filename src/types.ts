@@ -30,7 +30,7 @@ export interface Product {
 }
 
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   products: { quantity: number; product: Product }[];
 }

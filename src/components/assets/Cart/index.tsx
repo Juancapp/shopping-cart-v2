@@ -1,4 +1,17 @@
+import { useMemo } from "react";
+import { useUserStore } from "../../../zustand/store";
+
 function Cart() {
+  const user = useUserStore((state) => state.user);
+  const products = "products" in user ? user.products : [];
+
+  const productsTotalQuantity = useMemo(() => {
+    return products.reduce((acc, item) => {
+      acc += item.quantity;
+      return acc;
+    }, 0);
+  }, [products]);
+
   return (
     <div className="relative">
       <a href="#" className="text-white hover:text-gray-300">
@@ -18,7 +31,7 @@ function Cart() {
         </svg>
       </a>
       <span className="absolute top-0 right-0 bg-red-500 rounded-full text-white text-xs px-1 py-0.5">
-        3
+        {productsTotalQuantity}
       </span>
     </div>
   );

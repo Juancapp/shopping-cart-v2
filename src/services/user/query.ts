@@ -5,6 +5,6 @@ import { User } from "../../types";
 export const useUser = (name: string) => {
   return useQuery({
     queryFn: async () => await getRequest<User>(`${url}/user/${name}`),
-    queryKey: ["user", name],
+    queryKey: ["user"],
   });
 };

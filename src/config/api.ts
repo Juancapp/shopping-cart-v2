@@ -17,3 +17,8 @@ export const getRequest = async <T>(apiRoute: string, params?: object) => {
 
   return response;
 };
+
+export const patchRequest = async <T>(apiRoute: string) => {
+  const response = await api.patch<T>(apiRoute);
+  return response;
+};

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Stars from "../../assets/Stars";
-import { useProduct } from "../../../services/products/query";
+import Stars from "../../../assets/Stars";
+import { useProduct } from "../../../../services/products/query";
 import { useParams } from "react-router-dom";
 
 function ProductPage() {

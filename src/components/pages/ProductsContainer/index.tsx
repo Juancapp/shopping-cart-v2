@@ -3,6 +3,7 @@ import { useProductsQuery } from "../../../services/products/query";
 import { ProductData } from "../../../types";
 import { useEffect, useState } from "react";
 import Card from "../../assets/Card";
+import { useUserStore } from "../../../zustand/store";
 
 function ProductsContainer() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,6 +12,10 @@ function ProductsContainer() {
   for (let [key, value] of searchParams) {
     paramsObj[key] = value;
   }
+
+  const user = useUserStore((state) => state.user);
+  const products = "products" in user ? user.products : [];
+  const userId = "_id" in user ? user._id : "";
 
   const query = useProductsQuery(paramsObj);
 
@@ -43,7 +48,14 @@ function ProductsContainer() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 box-content">
           {data?.products.map((product, index) => {
-            return <Card {...product} key={index} />;
+            return (
+              <Card
+                {...product}
+                products={products}
+                userId={userId}
+                key={index}
+              />
+            );
           })}
         </div>
       )}
