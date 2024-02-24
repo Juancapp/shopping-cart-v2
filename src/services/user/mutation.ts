@@ -21,3 +21,25 @@ export const useAddOneItemMutation = (userId: string, productId: string) => {
     },
   });
 };
+
+export const useRemoveAllItemsMutation = (
+  userId: string,
+  productId: string
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<AxiosResponse<User, any>, Error>({
+    mutationKey: ["updateUser"],
+    mutationFn: async () => {
+      const response = await patchRequest<User>(
+        `${url}/user/removeAll/${userId}/${productId}`
+      );
+      return response;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+};
