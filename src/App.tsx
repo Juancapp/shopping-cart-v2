@@ -3,7 +3,7 @@ import Navbar from "./components/assets/Navbar";
 import RedirectToHome from "./components/redirect";
 import Modal from "./components/assets/Modal";
 import { useUserStore } from "./zustand/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUser } from "./services/user/query";
 import ProductsContainer from "./components/pages/Products";
 import ProductPage from "./components/pages/Products/Product";
