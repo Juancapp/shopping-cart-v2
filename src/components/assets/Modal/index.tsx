@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../Button";
 
-function Modal({ handleClick }: { handleClick: () => void }) {
+function Modal() {
   const [inputValue, setInputValue] = useState("");
 
   return (
@@ -17,7 +17,7 @@ function Modal({ handleClick }: { handleClick: () => void }) {
           text="Confirm"
           onClick={() => {
             localStorage.setItem("name", inputValue);
-            handleClick();
+            window.location.reload();
           }}
         />
       </div>

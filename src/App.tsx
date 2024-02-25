@@ -13,21 +13,16 @@ function App() {
   const name = localStorage.getItem("name");
   const userStore = useUserStore((state) => state);
   const userQuery = useUser(name!);
-  const [reRender, setReRender] = useState<boolean>(false);
 
   useEffect(() => {
     if (name && userQuery.isSuccess) {
       userStore.setUser(userQuery?.data?.data);
     }
-
-    if (!name) {
-      userStore.setUser({});
-    }
   }, [name, userQuery.dataUpdatedAt]);
 
   return (
     <>
-      {!name?.length && <Modal handleClick={() => setReRender(!reRender)} />}
+      {!name?.length && <Modal />}
       <div
         className={`font-sans h-full w-full ${
           !name?.length && "blur-sm overflow-y-hidden"

@@ -6,6 +6,8 @@ function Cart() {
   const user = useUserStore((state) => state.user);
   const products = "products" in user ? user.products : [];
 
+  console.log("USER", user);
+
   const productsTotalQuantity = useMemo(() => {
     return products.reduce((acc, item) => {
       acc += item.quantity;
