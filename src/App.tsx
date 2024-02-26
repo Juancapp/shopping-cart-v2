@@ -15,10 +15,8 @@ function App() {
   const userQuery = useUser(name!);
 
   useEffect(() => {
-    if (name && userQuery.isSuccess) {
-      userStore.setUser(userQuery?.data?.data);
-    }
-  }, [name, userQuery.dataUpdatedAt]);
+    userStore.setUser(userQuery?.data?.data!, userQuery.isFetching);
+  }, [name, userQuery.isSuccess, userQuery.isFetching]);
 
   return (
     <>

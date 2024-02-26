@@ -1,10 +1,16 @@
 import { useMemo } from "react";
 import { useUserStore } from "../../../../zustand/store";
 import { Link } from "react-router-dom";
+import Spinner from "../../../assets/Spinner";
+import { useQueryClient } from "@tanstack/react-query";
 
 function Cart() {
-  const user = useUserStore((state) => state.user);
-  const products = "products" in user ? user.products : [];
+  const { user, isFetching } = useUserStore((state) => state);
+  const queryClient = useQueryClient();
+  const state = queryClient.getQueryState(["user"]);
+  console.log(state);
+
+  const products = user && "products" in user ? user?.products! : [];
 
   const productsTotalQuantity = useMemo(() => {
     return products.reduce((acc, item) => {
@@ -32,7 +38,7 @@ function Cart() {
         </svg>
       </Link>
       <span className="absolute bottom-3 left-4 bg-red-500 rounded-full text-white mr-3 text-xs px-1.5 py-0.5">
-        {productsTotalQuantity}
+        {isFetching ? <Spinner /> : productsTotalQuantity}
       </span>
     </div>
   );

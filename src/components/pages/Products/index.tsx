@@ -21,8 +21,8 @@ function ProductsContainer() {
   }
 
   const user = useUserStore((state) => state.user);
-  const products = "products" in user ? user.products : [];
-  const userId = "_id" in user ? user._id : "";
+  const products = user && "products" in user! ? user.products : [];
+  const userId = user && "_id" in user ? user._id : "";
 
   const productsQuery = useProductsQuery(paramsObj);
 

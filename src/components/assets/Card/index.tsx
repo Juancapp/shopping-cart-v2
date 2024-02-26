@@ -30,7 +30,11 @@ function Card(
       <p className="text-lg text-gray-600">${price}</p>
       <Stars rate={rating.rate} />
       <div className="card-action flex justify-end">
-        <Button text="Add to cart" onClick={() => addItem.mutate()}>
+        <Button
+          text="Add to cart"
+          onClick={() => addItem.mutate()}
+          disabled={addItem.isPending || removeAllItems.isPending}
+        >
           {addItem.isPending || removeAllItems.isPending ? (
             <Spinner />
           ) : (

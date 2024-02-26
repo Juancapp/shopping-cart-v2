@@ -1,10 +1,11 @@
-import { create } from "zustand";
-import { User } from "../types";
+// import { create } from "zustand";
+// import { User } from "../types";
+// import { UserStore } from "./types";
 
-export const useUserStore = create<{
-  user: User | {};
-  setUser: (arg0: User | {}) => void;
-}>((set) => ({
-  user: {},
-  setUser: (user: User | {}) => set(() => ({ user: user })),
-}));
+// export const useUserStore = create<UserStore>((set) => ({
+//   user: {},
+//   isLoading: false,
+//   isFetching: false,
+//   setUser: (user: User | {}, isFetching) =>
+//     set(() => ({ user: user, isFetching: isFetching })),
+// }));
