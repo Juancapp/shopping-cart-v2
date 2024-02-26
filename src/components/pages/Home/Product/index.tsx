@@ -3,7 +3,7 @@ import Stars from "../../../assets/Stars";
 import { useProduct } from "../../../../services/products/query";
 import { useParams } from "react-router-dom";
 
-function ProductPage() {
+function Home() {
   const [inputValue, setInputValue] = useState("");
 
   const { id } = useParams();
@@ -44,4 +44,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default Home;
