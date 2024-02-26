@@ -3,6 +3,8 @@ import {
   useRemoveAllItemsMutation,
 } from "../../../services/user/mutation";
 import { Product } from "../../../types";
+import Button from "../Button";
+import Spinner from "../Spinner";
 import Stars from "../Stars";
 
 function Card(
@@ -14,7 +16,6 @@ function Card(
   const { title, price, image, rating, _id, products, userId } = props;
 
   const addItem = useAddOneItemMutation(userId, _id);
-
   const removeAllItems = useRemoveAllItemsMutation(userId, _id);
 
   const isProductInCart =
@@ -29,28 +30,28 @@ function Card(
       <p className="text-lg text-gray-600">${price}</p>
       <Stars rate={rating.rate} />
       <div className="card-action flex justify-end">
-        <button
-          className="bg-gray-800 text-white rounded py-2 px-4 hover:bg-gray-700 flex gap-1 relative"
-          onClick={() => addItem.mutate()}
-        >
-          <p>Add to cart</p>
-          {isProductInCart && (
-            <>
-              <p className="text-xs bg-white color text-gray-800 text-bold rounded-full w-4 h-4">
-                {products.find((item) => item.product._id === _id)?.quantity}
-              </p>
-              <span
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeAllItems.mutate();
-                }}
-                className="flex items-center justify-center text-xs bg-white color text-gray-800 text-bold rounded-[100%] border-radio w-4 h-4 absolute border-solid border-gray-800 border-2 bottom-8 left-[90%]"
-              >
-                x
-              </span>
-            </>
+        <Button text="Add to cart" onClick={() => addItem.mutate()}>
+          {addItem.isPending || removeAllItems.isPending ? (
+            <Spinner />
+          ) : (
+            isProductInCart && (
+              <>
+                <p className="text-xs bg-white color text-gray-800 text-bold rounded-full w-4 h-4">
+                  {products.find((item) => item.product._id === _id)?.quantity}
+                </p>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeAllItems.mutate();
+                  }}
+                  className="flex items-center justify-center text-xs bg-white color text-gray-800 text-bold rounded-[100%] border-radio w-4 h-4 absolute border-solid border-gray-800 border-2 bottom-8 left-[90%]"
+                >
+                  x
+                </span>
+              </>
+            )
           )}
-        </button>
+        </Button>
       </div>
     </div>
   );

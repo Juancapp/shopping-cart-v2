@@ -20,3 +20,8 @@ export const patchRequest = async <T>(apiRoute: string) => {
   const response = await api.patch<T>(apiRoute);
   return response;
 };
+
+export const putRequest = async <T>(apiRoute: string) => {
+  const response = await api.put<T>(apiRoute);
+  return response;
+};

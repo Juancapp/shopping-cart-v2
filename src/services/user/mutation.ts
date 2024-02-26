@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { patchRequest, url } from "../../config/api";
+import { putRequest, url } from "../../config/api";
 import { User } from "../../types";
 import { AxiosResponse } from "axios";
 
@@ -9,7 +9,7 @@ export const useAddOneItemMutation = (userId: string, productId: string) => {
   return useMutation<AxiosResponse<User, any>, Error>({
     mutationKey: ["updateUser"],
     mutationFn: async () => {
-      const response = await patchRequest<User>(
+      const response = await putRequest<User>(
         `${url}/user/addOne/${userId}/${productId}`
       );
       return response;
@@ -31,7 +31,7 @@ export const useRemoveAllItemsMutation = (
   return useMutation<AxiosResponse<User, any>, Error>({
     mutationKey: ["updateUser"],
     mutationFn: async () => {
-      const response = await patchRequest<User>(
+      const response = await putRequest<User>(
         `${url}/user/removeAll/${userId}/${productId}`
       );
       return response;

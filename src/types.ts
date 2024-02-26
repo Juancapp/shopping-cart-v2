@@ -35,7 +35,7 @@ export interface User {
   products: { quantity: number; product: Product }[];
 }
 
-export interface ProductData {
+export interface ProductsData {
   page: number;
   totalPages: number;
   products: Product[];

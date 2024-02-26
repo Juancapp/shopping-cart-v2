@@ -1,10 +1,10 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getRequest, url } from "../../config/api";
-import { Product } from "../../types";
+import { Product, ProductsData } from "../../types";
 
 export const useProductsQuery = (params: object) => {
   return useQuery({
-    queryFn: () => getRequest(`${url}/products`, params),
+    queryFn: () => getRequest<ProductsData>(`${url}/products`, params),
     queryKey: ["products", { params }],
     placeholderData: keepPreviousData,
   });
