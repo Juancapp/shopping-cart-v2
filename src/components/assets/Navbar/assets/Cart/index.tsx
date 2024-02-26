@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import Spinner from "../../../assets/Spinner";
-import { useUser } from "../../../../services/user/query";
+import Spinner from "../../../Spinner";
+import { useUser } from "../../../../../services/user/query";
 
 function Cart() {
   const useUserQuery = useUser();

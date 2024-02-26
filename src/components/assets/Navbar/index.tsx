@@ -5,7 +5,7 @@ import Radio from "../Radio";
 import { Category, Order, OrderBy } from "../../../types";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import Cart from "../../pages/Products/Cart";
+import Cart from "./assets/Cart";
 
 function Navbar() {
   const searchParams = useSearchParams();

@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useProductsQuery } from "../../../services/products/query";
 import { useEffect, useState } from "react";
-import Card from "../../assets/Card";
+import Card from "./Card";
 import Loader from "../../assets/Loader";
 import { JSX } from "react/jsx-runtime";
 import { useUser } from "../../../services/user/query";
@@ -21,14 +21,10 @@ function ProductsContainer() {
   }
 
   const useUserQuery = useUser();
-
   const user = useUserQuery?.data?.data;
-
   const products = user?.products?.length ? user?.products : [];
   const userId = user?._id || "";
-
   const productsQuery = useProductsQuery(paramsObj);
-
   const data = productsQuery?.data?.data;
 
   const [page, setPage] = useState(1);
