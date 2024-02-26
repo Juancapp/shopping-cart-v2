@@ -2,21 +2,12 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/assets/Navbar";
 import RedirectToHome from "./components/redirect";
 import Modal from "./components/assets/Modal";
-import { useUserStore } from "./zustand/store";
-import { useEffect } from "react";
-import { useUser } from "./services/user/query";
 import ProductsContainer from "./components/pages/Products";
 import ProductPage from "./components/pages/Products/Product";
 import Shopping from "./components/pages/Shopping";
 
 function App() {
   const name = localStorage.getItem("name");
-  const userStore = useUserStore((state) => state);
-  const userQuery = useUser(name!);
-
-  useEffect(() => {
-    userStore.setUser(userQuery?.data?.data!, userQuery.isFetching);
-  }, [name, userQuery.isSuccess, userQuery.isFetching]);
 
   return (
     <>

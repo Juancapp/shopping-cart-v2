@@ -1,23 +1,20 @@
 import { useMemo } from "react";
-import { useUserStore } from "../../../../zustand/store";
 import { Link } from "react-router-dom";
 import Spinner from "../../../assets/Spinner";
-import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "../../../../services/user/query";
 
 function Cart() {
-  const { user, isFetching } = useUserStore((state) => state);
-  const queryClient = useQueryClient();
-  const state = queryClient.getQueryState(["user"]);
-  console.log(state);
-
-  const products = user && "products" in user ? user?.products! : [];
+  const useUserQuery = useUser();
 
   const productsTotalQuantity = useMemo(() => {
-    return products.reduce((acc, item) => {
-      acc += item.quantity;
-      return acc;
-    }, 0);
-  }, [products]);
+    return useUserQuery?.data?.data.products?.reduce(
+      (acc: any, item: { quantity: any }) => {
+        acc += item.quantity;
+        return acc;
+      },
+      0
+    );
+  }, [useUserQuery?.dataUpdatedAt]);
 
   return (
     <div className="relative mr-2">
@@ -38,7 +35,7 @@ function Cart() {
         </svg>
       </Link>
       <span className="absolute bottom-3 left-4 bg-red-500 rounded-full text-white mr-3 text-xs px-1.5 py-0.5">
-        {isFetching ? <Spinner /> : productsTotalQuantity}
+        {useUserQuery?.isFetching ? <Spinner /> : productsTotalQuantity}
       </span>
     </div>
   );

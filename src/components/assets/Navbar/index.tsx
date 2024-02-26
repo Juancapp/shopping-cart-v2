@@ -4,7 +4,7 @@ import { categoryOptions, orderOptions } from "./constants";
 import Radio from "../Radio";
 import { Category, Order, OrderBy } from "../../../types";
 import { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Cart from "../../pages/Products/Cart";
 
 function Navbar() {
@@ -14,6 +14,7 @@ function Navbar() {
   const categoryParam = queryParams.get("category");
   const orderParam = queryParams.get("order");
   const orderByParam = queryParams.get("orderBy");
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
     title: "",
@@ -87,7 +88,12 @@ function Navbar() {
   return (
     <div className="bg-gray-900 p-4 flex flex-col gap-2">
       <div className="flex justify-between">
-        <p className="text-white font-bold">CC</p>
+        <p
+          className="text-white font-bold cursor-pointer"
+          onClick={() => navigate("/home")}
+        >
+          CC
+        </p>
         <Cart />
       </div>
       {location.pathname === "/home" && (
