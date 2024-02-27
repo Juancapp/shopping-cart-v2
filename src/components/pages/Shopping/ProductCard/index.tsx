@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import {
   useAddOneItemMutation,
-  // useEditItemsMutation,
+  useEditItemsMutation,
   useRemoveAllItemsMutation,
-  // useRemoveOneItemMutation,
+  useRemoveOneItemMutation,
 } from "../../../../services/user/mutation";
 import { Product } from "../../../../types";
 import Stars from "../../../assets/Stars";
@@ -14,26 +14,26 @@ function ProductCard(props: Product & { quantity: number; userId: string }) {
 
   const useRemoveAllItems = useRemoveAllItemsMutation(userId, _id);
   const useAddOneItem = useAddOneItemMutation(userId, _id);
-  // const useRemoveOneItem = useRemoveOneItemMutation(userId, _id);
+  const useRemoveOneItem = useRemoveOneItemMutation(userId, _id);
 
-  // const useEditItems = useEditItemsMutation(userId, _id);
+  const useEditItems = useEditItemsMutation(userId, _id, quantity);
 
   const handleRemoveAllItems = () => {
     useRemoveAllItems.mutate();
   };
 
-  // const handleEditItems = () => {
-  //   console.log("HANDLE EDIT", inputRef?.current?.value);
-  //   useEditItems.mutate(parseInt(inputRef?.current?.value));
-  // };
+  const handleEditItems = () => {
+    console.log("HANDLE EDIT", inputRef?.current?.value);
+    useEditItems.mutate();
+  };
 
   const handleAddOneItem = () => {
     useAddOneItem.mutate();
   };
 
-  // const handleRemoveOneItem = () => {
-  //   useRemoveOneItem.mutate();
-  // };
+  const handleRemoveOneItem = () => {
+    useRemoveOneItem.mutate();
+  };
 
   return (
     <div className="flex justify-around gap-5 h-52 md:w-1/3 shadow-md rounded p-3">
@@ -46,7 +46,7 @@ function ProductCard(props: Product & { quantity: number; userId: string }) {
         <div className="display flex gap-2">
           <span
             className="cursor-pointer text-lg px-3"
-            // onClick={() => handleRemoveOneItem()}
+            onClick={() => handleRemoveOneItem()}
           >
             -
           </span>
@@ -54,7 +54,7 @@ function ProductCard(props: Product & { quantity: number; userId: string }) {
             ref={inputRef}
             type="number"
             defaultValue={quantity}
-            // onBlur={() => handleEditItems()}
+            onBlur={() => handleEditItems()}
           />
           <span
             className="cursor-pointer text-lg px-3"

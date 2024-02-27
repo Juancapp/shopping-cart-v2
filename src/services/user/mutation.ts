@@ -7,10 +7,29 @@ export const useAddOneItemMutation = (userId: string, productId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation<AxiosResponse<User, any>, Error>({
-    mutationKey: ["updateUser"],
+    mutationKey: ["addOneItem"],
     mutationFn: async () => {
       const response = await putRequest<User>(
         `${url}/user/addOne/${userId}/${productId}`
+      );
+      return response;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+};
+
+export const useRemoveOneItemMutation = (userId: string, productId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<AxiosResponse<User, any>, Error>({
+    mutationKey: ["removeOneItem"],
+    mutationFn: async () => {
+      const response = await putRequest<User>(
+        `${url}/user/removeOne/${userId}/${productId}`
       );
       return response;
     },
@@ -29,10 +48,33 @@ export const useRemoveAllItemsMutation = (
   const queryClient = useQueryClient();
 
   return useMutation<AxiosResponse<User, any>, Error>({
-    mutationKey: ["updateUser"],
+    mutationKey: ["removeAllItems"],
     mutationFn: async () => {
       const response = await putRequest<User>(
         `${url}/user/removeAll/${userId}/${productId}`
+      );
+      return response;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+};
+
+export const useEditItemsMutation = (
+  userId: string,
+  productId: string,
+  quantity: number
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<AxiosResponse<User, any>, Error>({
+    mutationKey: ["editItem"],
+    mutationFn: async () => {
+      const response = await putRequest<User>(
+        `${url}/user/edit/${userId}/${productId}/${quantity}`
       );
       return response;
     },
