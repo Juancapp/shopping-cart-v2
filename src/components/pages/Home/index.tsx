@@ -9,7 +9,7 @@ import { useUser } from "../../../services/user/query";
 let loaders: JSX.Element[] = [];
 
 for (let i = 0; i < 9; i++) {
-  loaders.push(<Loader />);
+  loaders.push(<Loader key={i} />);
 }
 
 function ProductsContainer() {
