@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   useAddOneItemMutation,
   useEditItemsMutation,
@@ -12,18 +12,23 @@ function ProductCard(props: Product & { quantity: number; userId: string }) {
   const { rating, image, title, price, _id, userId, quantity } = props;
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const [inputValue, setInputValue] = useState(quantity);
+
   const useRemoveAllItems = useRemoveAllItemsMutation(userId, _id);
   const useAddOneItem = useAddOneItemMutation(userId, _id);
   const useRemoveOneItem = useRemoveOneItemMutation(userId, _id);
 
-  const useEditItems = useEditItemsMutation(userId, _id, quantity);
+  const useEditItems = useEditItemsMutation(userId, _id, inputValue);
+
+  useEffect(() => {
+    setInputValue(quantity);
+  }, [quantity]);
 
   const handleRemoveAllItems = () => {
     useRemoveAllItems.mutate();
   };
 
   const handleEditItems = () => {
-    console.log("HANDLE EDIT", inputRef?.current?.value);
     useEditItems.mutate();
   };
 
@@ -53,8 +58,9 @@ function ProductCard(props: Product & { quantity: number; userId: string }) {
           <input
             ref={inputRef}
             type="number"
-            defaultValue={quantity}
+            value={inputValue}
             onBlur={() => handleEditItems()}
+            onChange={(e) => setInputValue(parseInt(e.target.value))}
           />
           <span
             className="cursor-pointer text-lg px-3"

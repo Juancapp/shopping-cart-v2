@@ -2,9 +2,11 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../../../Spinner";
 import { useUser } from "../../../../../services/user/query";
+import { useIsMutating } from "@tanstack/react-query";
 
 function Cart() {
   const useUserQuery = useUser();
+  const isMutatingUser = useIsMutating();
 
   const productsTotalQuantity = useMemo(() => {
     return useUserQuery?.data?.data.products?.reduce(
@@ -35,7 +37,11 @@ function Cart() {
         </svg>
       </Link>
       <span className="absolute bottom-3 left-4 bg-red-500 rounded-full text-white mr-3 text-xs px-1.5 py-0.5">
-        {useUserQuery?.isFetching ? <Spinner /> : productsTotalQuantity}
+        {useUserQuery?.isFetching || isMutatingUser > 0 ? (
+          <Spinner />
+        ) : (
+          productsTotalQuantity
+        )}
       </span>
     </div>
   );
