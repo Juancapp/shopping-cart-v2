@@ -7,7 +7,7 @@ export const useAddOneItemMutation = (userId: string, productId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation<AxiosResponse<User, any>, Error>({
-    mutationKey: ["addOneItem"],
+    mutationKey: ["addOneItem", userId, productId],
     mutationFn: async () => {
       const response = await putRequest<User>(
         `${url}/user/addOne/${userId}/${productId}`
@@ -26,7 +26,7 @@ export const useRemoveOneItemMutation = (userId: string, productId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation<AxiosResponse<User, any>, Error>({
-    mutationKey: ["removeOneItem"],
+    mutationKey: ["removeOneItem", userId, productId],
     mutationFn: async () => {
       const response = await putRequest<User>(
         `${url}/user/removeOne/${userId}/${productId}`
@@ -48,7 +48,7 @@ export const useRemoveAllItemsMutation = (
   const queryClient = useQueryClient();
 
   return useMutation<AxiosResponse<User, any>, Error>({
-    mutationKey: ["removeAllItems"],
+    mutationKey: ["removeAllItems", userId, productId],
     mutationFn: async () => {
       const response = await putRequest<User>(
         `${url}/user/removeAll/${userId}/${productId}`
@@ -71,7 +71,7 @@ export const useEditItemsMutation = (
   const queryClient = useQueryClient();
 
   return useMutation<AxiosResponse<User, any>, Error>({
-    mutationKey: ["editItem"],
+    mutationKey: ["editItem", userId, productId, quantity],
     mutationFn: async () => {
       const response = await putRequest<User>(
         `${url}/user/edit/${userId}/${productId}/${quantity}`
