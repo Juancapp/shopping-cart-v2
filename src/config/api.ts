@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Purchase } from "../types";
 
 export const url = import.meta.env.VITE_APP_API_URL;
 
@@ -14,6 +15,15 @@ export const getRequest = async <T>(apiRoute: string, params?: object) => {
     : await api.get<T>(apiRoute);
 
   return response;
+};
+
+export const postRequest = async <T>(apiRoute: string, body: Purchase) => {
+  try {
+    const response = await api.post<T>(apiRoute, body);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const patchRequest = async <T>(apiRoute: string) => {

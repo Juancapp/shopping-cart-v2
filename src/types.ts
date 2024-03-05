@@ -40,3 +40,15 @@ export interface ProductsData {
   totalPages: number;
   products: Product[];
 }
+
+export enum Status {
+  PENDING = "pending",
+  SUCCESS = "success",
+}
+export interface Purchase {
+  user: string;
+  totalPrice: number;
+  totalQuantity: number;
+  products: { quantity: number; product: Product }[];
+  status: Status;
+}

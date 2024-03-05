@@ -1,15 +1,22 @@
 import { ButtonHTMLAttributes } from "react";
 
+export enum ButtonVariant {
+  PRIMARY = "bg-gray-800",
+  BLACK = "bg-gray-900",
+}
+
 function Button(
   props: ButtonHTMLAttributes<HTMLButtonElement> & {
     text: string;
+    variant?: ButtonVariant;
   }
 ) {
-  const { text, children } = props;
+  const { text, children, onClick, variant = ButtonVariant.PRIMARY } = props;
 
   return (
     <button
-      className="bg-gray-800 text-white rounded py-2 px-4 hover:bg-gray-700 flex gap-1 relative"
+      className={`${variant} text-white rounded py-2 px-4 w-fit hover:bg-gray-700 flex gap-1 relative`}
+      onClick={onClick}
       {...props}
     >
       {text}
