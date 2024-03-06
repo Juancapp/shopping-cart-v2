@@ -8,6 +8,7 @@ import ProductsContainer from "./components/pages/Home";
 import Home from "./components/pages/Home/";
 import { useState } from "react";
 import Button from "./components/assets/Button";
+import ProfilePicture from "./components/assets/ProfilePicture";
 
 function App() {
   const name = localStorage.getItem("name");
@@ -15,7 +16,8 @@ function App() {
 
   return (
     <>
-      {!name?.length && (
+      <ProfilePicture />
+      {/* {!name?.length && (
         <Modal>
           <h1 className="text-2xl text-white font-bold">User</h1>
           <input
@@ -31,7 +33,7 @@ function App() {
             }}
           />
         </Modal>
-      )}
+      )} */}
       <div
         className={`font-sans h-full w-full ${
           !name?.length && "blur-sm overflow-y-hidden"
