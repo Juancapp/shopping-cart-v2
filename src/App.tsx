@@ -53,6 +53,14 @@ function App() {
             <Route path="/home" element={<ProductsContainer />} />
             <Route path="/product/:id" element={<Home />} />
             <Route path="/shopping" element={<Shopping />} />
+            <Route
+              path="/purchases"
+              element={<h1>Purchases (work in progress)</h1>}
+            />
+            <Route
+              path="/documentation"
+              element={<h1>Documentation (work in progress)</h1>}
+            />
           </Routes>
         </BrowserRouter>
       </div>

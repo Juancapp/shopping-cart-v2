@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Cart from "./assets/Cart";
 import NavMenu from "../NavMenu";
+import { Disclosure } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 function Navbar() {
   const searchParams = useSearchParams();
@@ -16,6 +18,28 @@ function Navbar() {
   const orderParam = queryParams.get("order");
   const orderByParam = queryParams.get("orderBy");
   const navigate = useNavigate();
+
+  const [navigation, setNavigation] = useState([
+    { name: "Home", href: "/home", current: true },
+    { name: "My Purchases", href: "/purchases", current: false },
+    { name: "Documentation", href: "/documentation", current: false },
+  ]);
+
+  const handleClick = (name: string) => {
+    setNavigation(
+      navigation.map((nav) => {
+        return { ...nav, current: nav.name === name };
+      })
+    );
+  };
+
+  useEffect(() => {
+    navigation.forEach((item) => {
+      if (item.current === true) {
+        return navigate(item.href);
+      }
+    });
+  }, [navigation]);
 
   const [filters, setFilters] = useState({
     title: "",
@@ -86,20 +110,88 @@ function Navbar() {
     }
   }, [filters]);
 
+  function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(" ");
+  }
+
   return (
-    <div className="bg-gray-900 p-4 flex flex-col gap-2">
-      <div className="flex justify-between">
-        <p
-          className="text-white font-bold cursor-pointer"
-          onClick={() => navigate("/home")}
-        >
-          CC
-        </p>
-        <div className="flex gap-10 items-center">
-          <Cart />
-          <NavMenu />
-        </div>
-      </div>
+    <div className="bg-gray-900 flex flex-col gap-2 pb-5 px-4">
+      <Disclosure as="nav" className="bg-inherit">
+        {({ open }) => (
+          <>
+            <div className="">
+              <div className="relative flex h-16 items-center justify-between">
+                <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                  <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <span className="absolute -inset-0.5" />
+                    <span className="sr-only">Open main menu</span>
+                    {open ? (
+                      <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                    ) : (
+                      <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                    )}
+                  </Disclosure.Button>
+                </div>
+                <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                  <div className="flex flex-shrink-0 items-center">
+                    <p
+                      className="text-white font-bold cursor-pointer"
+                      onClick={() => navigate("/home")}
+                    >
+                      CC
+                    </p>
+                  </div>
+                  <div className="hidden sm:ml-6 md:ml-20 sm:block">
+                    <div className="flex space-x-4">
+                      {navigation.map((item) => (
+                        <div
+                          key={item.name}
+                          onClick={() => handleClick(item.name)}
+                          className={classNames(
+                            item.current
+                              ? "shadow-2xl text-white"
+                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            "rounded-md px-3 py-2 text-sm font-medium cursor-pointer"
+                          )}
+                          aria-current={item.current ? "page" : undefined}
+                        >
+                          {item.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <div className="flex gap-0 lg:gap-12 items-center">
+                    <Cart />
+                    <NavMenu />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Disclosure.Panel className="sm:hidden">
+              <div className="space-y-1 px-2 pb-3 pt-2">
+                {navigation.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    onClick={() => handleClick(item.name)}
+                    className={classNames(
+                      item.current
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      "block rounded-md px-3 py-2 text-base font-medium"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
+              </div>
+            </Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
       {location.pathname === "/home" && (
         <>
           <Searchbar
