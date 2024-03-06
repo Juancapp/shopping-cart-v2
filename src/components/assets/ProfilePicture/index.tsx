@@ -4,6 +4,8 @@ import Button, { ButtonVariant } from "../Button";
 import { useMutation } from "@tanstack/react-query";
 import { postRequest } from "../../../config/api";
 import Spinner from "../Spinner";
+import { useToastStore } from "../../../zustand/store";
+import { ToastType } from "../../../zustand/types";
 
 interface ParamsType {
   userId: string;
@@ -26,6 +28,7 @@ function ProfilePicture({
   }/${userId}.jpg?${new Date().getTime()}`;
 
   const [imageSrc, setImageSrc] = useState(urlImg);
+  const { setToast } = useToastStore((state) => state);
 
   const postPictureMutation = useMutation<void, Error, ParamsType>({
     mutationKey: ["postPicture"],
@@ -36,6 +39,7 @@ function ProfilePicture({
       );
     },
     onSuccess: async () => {
+      setToast(ToastType.SUCCESS, "Profile photo changed successfully");
       setModalDisplay(false);
     },
   });

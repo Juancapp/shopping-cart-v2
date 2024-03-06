@@ -2,6 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import ProfilePicture from "../ProfilePicture";
 import { useUser } from "../../../services/user/query";
+import { useSearchParams } from "react-router-dom";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -12,6 +13,7 @@ function NavMenu() {
   const userQuery = useUser();
   const userId = userQuery?.data?.data?._id || "";
   const userName = userQuery?.data?.data?.name || "";
+  const searchParams = useSearchParams();
 
   return (
     <>
@@ -72,6 +74,7 @@ function NavMenu() {
                   )}
                   onClick={() => {
                     localStorage.removeItem("name");
+                    searchParams[1]({});
                     window.location.reload();
                   }}
                 >

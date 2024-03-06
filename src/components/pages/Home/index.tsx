@@ -5,6 +5,8 @@ import Card from "./Card";
 import Loader from "../../assets/Loader";
 import { JSX } from "react/jsx-runtime";
 import { useUser } from "../../../services/user/query";
+import { useToastStore } from "../../../zustand/store";
+import { ToastType } from "../../../zustand/types";
 
 let loaders: JSX.Element[] = [];
 
@@ -26,8 +28,15 @@ function ProductsContainer() {
   const userId = user?._id || "";
   const productsQuery = useProductsQuery(paramsObj);
   const data = productsQuery?.data?.data;
+  const { setToast } = useToastStore((state) => state);
 
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (productsQuery?.isError) {
+      setToast(ToastType.ERROR, "Products not found");
+    }
+  }, [productsQuery?.isError]);
 
   const handlePreviousPage = () => {
     setPage(page - 1);

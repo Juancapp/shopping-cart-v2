@@ -1,7 +1,10 @@
-import { User } from "../types";
+export enum ToastType {
+  SUCCESS = "success",
+  ERROR = "error",
+}
 
-export interface UserStore {
-  user: User | {};
-  setUser: (arg0: User | {}, arg1?: boolean) => void;
-  isFetching?: boolean;
+export interface ToastStore {
+  type: ToastType;
+  text: string;
+  setToast: (type: ToastType, text: string) => void;
 }

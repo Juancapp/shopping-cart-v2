@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../../../Spinner";
 import { useUser } from "../../../../../services/user/query";
@@ -7,28 +7,18 @@ import { useIsMutating } from "@tanstack/react-query";
 function Cart() {
   const useUserQuery = useUser();
 
-  const mutations = [
-    ["addOneItem"],
-    ["removeOneItem"],
-    ["removeAllItems"],
-    ["editItem"],
-  ];
+  const addOneItemMutating = useIsMutating({ mutationKey: ["addOneItem"] }) > 0;
+  const removeOneItemMutating =
+    useIsMutating({ mutationKey: ["removeOneItem"] }) > 0;
+  const removeAllItemsMutating =
+    useIsMutating({ mutationKey: ["removeAllItems"] }) > 0;
+  const editItemMutating = useIsMutating({ mutationKey: ["editItem"] }) > 0;
 
-  const [mutating, setMutating] = useState(false);
-
-  useEffect(() => {
-    const checkMutations = async () => {
-      for (let i = 0; i < mutations.length; i++) {
-        if (useIsMutating({ mutationKey: mutations[i] }) > 0) {
-          setMutating(true);
-          return;
-        }
-      }
-      setMutating(false);
-    };
-
-    checkMutations();
-  }, [useUserQuery?.dataUpdatedAt]);
+  const isAnyMutationHappening =
+    addOneItemMutating ||
+    removeOneItemMutating ||
+    removeAllItemsMutating ||
+    editItemMutating;
 
   const productsTotalQuantity = useMemo(() => {
     return useUserQuery?.data?.data.products?.reduce(
@@ -59,7 +49,7 @@ function Cart() {
         </svg>
       </Link>
       <span className="absolute bottom-3 left-4 bg-red-500 rounded-full text-white mr-3 text-xs px-1.5 py-0.5">
-        {useUserQuery?.isFetching || mutating ? (
+        {useUserQuery?.isFetching || isAnyMutationHappening ? (
           <Spinner />
         ) : (
           productsTotalQuantity

@@ -8,12 +8,15 @@ import { Purchase, Status } from "../../../types";
 import { postRequest, url } from "../../../config/api";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../assets/Spinner";
+import { useToastStore } from "../../../zustand/store";
+import { ToastType } from "../../../zustand/types";
 
 function Shopping() {
   const userQuery = useUser();
   const [modalDisplay, setModalDisplay] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { setToast } = useToastStore((state) => state);
 
   const usePurchaseMutation = useMutation<void, Error, Purchase>({
     mutationKey: ["postPurchase"],
@@ -27,8 +30,12 @@ function Shopping() {
       await queryClient.invalidateQueries({
         queryKey: ["user"],
       });
-
       setModalDisplay(false);
+      setToast(ToastType.SUCCESS, "Products successfully purchased!");
+    },
+
+    onError: async (error) => {
+      setToast(ToastType.ERROR, error.message);
     },
   });
 
