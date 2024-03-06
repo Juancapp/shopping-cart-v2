@@ -21,7 +21,7 @@ function Shopping() {
   const usePurchaseMutation = useMutation<void, Error, Purchase>({
     mutationKey: ["postPurchase"],
     mutationFn: async (variables: Purchase) => {
-      await postRequest<Purchase>(`${url}/purchase`, variables);
+      await postRequest<Purchase>(`${url}/purchases`, variables);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

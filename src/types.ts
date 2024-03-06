@@ -21,6 +21,7 @@ export interface Product {
   _id: string;
   title: string;
   description: string;
+  category: Category;
   price: number;
   rating: {
     rate: number;
@@ -51,4 +52,5 @@ export interface Purchase {
   totalQuantity: number;
   products: { quantity: number; product: Product }[];
   status: Status;
+  createdAt?: string;
 }

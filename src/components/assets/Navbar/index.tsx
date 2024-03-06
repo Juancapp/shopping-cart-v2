@@ -135,7 +135,7 @@ function Navbar() {
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
                     <p
-                      className="text-white font-bold cursor-pointer"
+                      className="text-white text-xl font-bold cursor-pointer"
                       onClick={() => navigate("/home")}
                     >
                       CC

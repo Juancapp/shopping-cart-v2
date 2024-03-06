@@ -13,7 +13,8 @@ function Card(
     userId: string;
   }
 ) {
-  const { title, price, image, rating, _id, products, userId } = props;
+  const { title, price, image, rating, _id, products, userId, category } =
+    props;
 
   const addItem = useAddOneItemMutation(userId, _id);
   const removeAllItems = useRemoveAllItemsMutation(userId, _id);
@@ -27,6 +28,7 @@ function Card(
         <img className="object-cover h-full" src={image} alt="Shoes" />
       </div>
       <h3 className="text-base font-bold text-gray-800">{title}</h3>
+      <p className=" text-gray-600 font-extralight">{category}</p>
       <p className="text-lg text-gray-600">${price}</p>
       <Stars rate={rating.rate} />
       <div className="card-action flex justify-end">

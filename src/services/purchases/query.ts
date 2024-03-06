@@ -4,7 +4,7 @@ import { Purchase } from "../../types";
 
 export const usePurchases = (userId: string) => {
   return useQuery({
-    queryFn: () => getRequest<Purchase>(`${url}/purchase/${userId}`),
+    queryFn: () => getRequest<Purchase>(`${url}/purchases/${userId}`),
     queryKey: ["purchases"],
     staleTime: 60 * 1000 * 5,
   });
