@@ -6,6 +6,7 @@ import { Category, Order, OrderBy } from "../../../types";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Cart from "./assets/Cart";
+import NavMenu from "../NavMenu";
 
 function Navbar() {
   const searchParams = useSearchParams();
@@ -94,7 +95,10 @@ function Navbar() {
         >
           CC
         </p>
-        <Cart />
+        <div className="flex gap-10 items-center">
+          <Cart />
+          <NavMenu />
+        </div>
       </div>
       {location.pathname === "/home" && (
         <>

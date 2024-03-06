@@ -3,17 +3,27 @@ import Modal from "../Modal";
 import Button, { ButtonVariant } from "../Button";
 import { useMutation } from "@tanstack/react-query";
 import { postRequest } from "../../../config/api";
+import Spinner from "../Spinner";
 
 interface ParamsType {
   userId: string;
   img: string;
 }
 
-function ProfilePicture() {
-  const userId = "65d9a1c087472dcdbfc301f0";
+function ProfilePicture({
+  setModalDisplay,
+  userId,
+  userName,
+}: {
+  setModalDisplay: (arg0: boolean) => void;
+  userId: string;
+  userName: string;
+}) {
   const urlImg = `https://${import.meta.env.VITE_APP_BUCKET_NAME}.s3.${
     import.meta.env.VITE_APP_REGION
-  }.amazonaws.com/${import.meta.env.VITE_APP_FOLDER_NAME}/${userId}.jpg`;
+  }.amazonaws.com/${
+    import.meta.env.VITE_APP_FOLDER_NAME
+  }/${userId}.jpg?${new Date().getTime()}`;
 
   const [imageSrc, setImageSrc] = useState(urlImg);
 
@@ -26,7 +36,7 @@ function ProfilePicture() {
       );
     },
     onSuccess: async () => {
-      setImageSrc(urlImg + "?" + new Date().getTime());
+      setModalDisplay(false);
     },
   });
 
@@ -54,10 +64,14 @@ function ProfilePicture() {
 
   return (
     <Modal>
-      <h1 className="text-white text-xl inline-block">Upload photo</h1>
+      <h1 className="text-white text-2xl inline-block">Upload photo</h1>
       <div className="relative self-center">
         <div className="h-40 w-40 border-4 rounded-full overflow-hidden">
-          <img src={imageSrc} alt="" className="w-full h-full object-cover" />
+          <img
+            src={imageSrc}
+            alt="Profile picture"
+            className="w-full h-full object-cover"
+          />
         </div>
         <label className="cursor-pointer absolute bottom-0 right-0">
           <div className="flex items-center justify-center w-12 h-12 bg-gray-900 text-white rounded-full hover:bg-black">
@@ -81,13 +95,16 @@ function ProfilePicture() {
           />
         </label>
       </div>
+      <h2 className="text-white text-xl self-center w-min mt-4">{userName}</h2>
       <div className="self-center md:self-end mt-6 flex gap-2">
-        <Button text="Cancel" />
+        <Button text="Exit" onClick={() => setModalDisplay(false)} />
         <Button
           variant={ButtonVariant.BLACK}
           onClick={handleSubmit}
-          text="Save"
-        />
+          text={!postPictureMutation.isPending ? "Save" : ""}
+        >
+          {postPictureMutation.isPending && <Spinner />}
+        </Button>
       </div>
     </Modal>
   );
