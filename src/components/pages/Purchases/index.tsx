@@ -34,14 +34,11 @@ function Purchases() {
     [purchasesQuery]
   );
 
-  console.log("purchasesData", purchasesQuery.dataUpdatedAt);
-
   const headers = ["Date", "Products", "Total price", "Status", "Generate PDF"];
 
   return (
     <div className="p-10">
       <div className="overflow-x-auto">
-        {" "}
         <table>
           <thead>
             <tr className="px-10 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
