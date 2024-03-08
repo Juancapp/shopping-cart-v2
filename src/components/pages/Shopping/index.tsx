@@ -18,10 +18,10 @@ function Shopping() {
   const navigate = useNavigate();
   const { setToast } = useToastStore((state) => state);
 
-  const usePurchaseMutation = useMutation<void, Error, Purchase>({
+  const usePurchaseMutation = useMutation<void, Error, Omit<Purchase, "_id">>({
     mutationKey: ["postPurchase"],
-    mutationFn: async (variables: Purchase) => {
-      await postRequest<Purchase>(`${url}/purchases`, variables);
+    mutationFn: async (variables: Omit<Purchase, "_id">) => {
+      await postRequest<Omit<Purchase, "_id">>(`${url}/purchases`, variables);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
