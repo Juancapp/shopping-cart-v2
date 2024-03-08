@@ -10,6 +10,7 @@ import { useState } from "react";
 import Button from "./components/assets/Button";
 import { useToastStore } from "./zustand/store";
 import Toast from "./components/assets/Toast";
+import Purchases from "./components/pages/Purchases";
 
 function App() {
   const name = localStorage.getItem("name");
@@ -53,10 +54,7 @@ function App() {
             <Route path="/home" element={<ProductsContainer />} />
             <Route path="/product/:id" element={<Home />} />
             <Route path="/shopping" element={<Shopping />} />
-            <Route
-              path="/purchases"
-              element={<h1>Purchases (work in progress)</h1>}
-            />
+            <Route path="/purchases" element={<Purchases />} />
             <Route
               path="/documentation"
               element={<h1>Documentation (work in progress)</h1>}

@@ -20,9 +20,17 @@ function Navbar() {
   const navigate = useNavigate();
 
   const [navigation, setNavigation] = useState([
-    { name: "Home", href: "/home", current: true },
-    { name: "My Purchases", href: "/purchases", current: false },
-    { name: "Documentation", href: "/documentation", current: false },
+    { name: "Home", href: "/home", current: location.pathname === "/home" },
+    {
+      name: "My Purchases",
+      href: "/purchases",
+      current: location.pathname === "purchases",
+    },
+    {
+      name: "Documentation",
+      href: "/documentation",
+      current: location.pathname === "/documentation",
+    },
   ]);
 
   const handleClick = (name: string) => {

@@ -47,6 +47,7 @@ export enum Status {
   SUCCESS = "success",
 }
 export interface Purchase {
+  _id: string;
   user: string;
   totalPrice: number;
   totalQuantity: number;
