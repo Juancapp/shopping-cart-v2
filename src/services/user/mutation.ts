@@ -10,7 +10,8 @@ export const useAddOneItemMutation = (userId: string, productId: string) => {
     mutationKey: ["addOneItem", userId, productId],
     mutationFn: async () => {
       const response = await putRequest<User>(
-        `${url}/user/addOne/${userId}/${productId}`
+        `${url}/user/addOne/${userId}/${productId}`,
+        {}
       );
       return response;
     },
@@ -29,7 +30,8 @@ export const useRemoveOneItemMutation = (userId: string, productId: string) => {
     mutationKey: ["removeOneItem", userId, productId],
     mutationFn: async () => {
       const response = await putRequest<User>(
-        `${url}/user/removeOne/${userId}/${productId}`
+        `${url}/user/removeOne/${userId}/${productId}`,
+        {}
       );
       return response;
     },
@@ -51,7 +53,8 @@ export const useRemoveAllItemsMutation = (
     mutationKey: ["removeAllItems", userId, productId],
     mutationFn: async () => {
       const response = await putRequest<User>(
-        `${url}/user/removeAll/${userId}/${productId}`
+        `${url}/user/removeAll/${userId}/${productId}`,
+        {}
       );
       return response;
     },
@@ -74,7 +77,8 @@ export const useEditItemsMutation = (
     mutationKey: ["editItem", userId, productId, quantity],
     mutationFn: async () => {
       const response = await putRequest<User>(
-        `${url}/user/edit/${userId}/${productId}/${quantity}`
+        `${url}/user/edit/${userId}/${productId}/${quantity}`,
+        {}
       );
       return response;
     },
