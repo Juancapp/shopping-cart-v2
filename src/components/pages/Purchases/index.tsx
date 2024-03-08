@@ -49,9 +49,7 @@ function Purchases() {
           </thead>
           <tbody>
             {tableData.map((purchase: PurchaseTable) => {
-              const keys: (keyof PurchaseTable)[] = Object.keys(
-                purchase
-              ) as (keyof PurchaseTable)[];
+              const keys = Object.keys(purchase) as (keyof PurchaseTable)[];
               return (
                 <tr className="hover:bg-gray-100">
                   {keys.map((key) => {

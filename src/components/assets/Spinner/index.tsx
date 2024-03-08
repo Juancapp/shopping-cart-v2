@@ -1,7 +1,7 @@
 function Spinner({ toModal = false }: { toModal?: boolean }) {
   return (
     <svg
-      className={`animate-spin ${toModal ? "h-full w-full" : "h-4 w-4"}`}
+      className={`animate-spin ${toModal ? "h-12 w-12" : "h-4 w-4"}`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
