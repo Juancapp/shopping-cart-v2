@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProfilePicture from "../ProfilePicture";
 import { useUser } from "../../../services/user/query";
 import { useSearchParams } from "react-router-dom";
@@ -12,18 +12,17 @@ function NavMenu() {
   const [modalDisplay, setModalDisplay] = useState<boolean>(false);
   const userQuery = useUser();
   const userId = userQuery?.data?.data?._id || "";
-  const userName = userQuery?.data?.data?.name || "";
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (userQuery?.isSuccess) {
+      localStorage.setItem("firstTime", userQuery.data?.data?.firstTime);
+    }
+  }, [userQuery?.dataUpdatedAt]);
 
   return (
     <>
-      {modalDisplay && (
-        <ProfilePicture
-          setModalDisplay={setModalDisplay}
-          userId={userId}
-          userName={userName}
-        />
-      )}
+      {modalDisplay && <ProfilePicture setModalDisplay={setModalDisplay} />}
       <Menu as="div" className="relative ml-3">
         <div>
           <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -74,6 +73,7 @@ function NavMenu() {
                   )}
                   onClick={() => {
                     localStorage.removeItem("name");
+                    localStorage.removeItem("firstTime");
                     searchParams[1]({});
                     window.location.reload();
                   }}

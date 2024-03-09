@@ -1,26 +1,15 @@
 import { useToastStore } from "../../../zustand/store";
 import { ToastType } from "../../../zustand/types";
+import { classTypes } from "./constants";
 
 function Toast({ text }: { text: string }) {
   const toastStore = useToastStore((state) => state);
   const { setToast, type } = toastStore;
 
-  const bgColor = type === ToastType.SUCCESS ? "bg-green-500" : "bg-red-500";
-  const ringColor =
-    type === ToastType.SUCCESS ? "focus:ring-green-500" : "focus:ring-red-500";
-  const darkRingColor =
-    type === ToastType.SUCCESS
-      ? "dark:focus:ring-green-700"
-      : "dark:focus:ring-red-700";
-  const ringOffsetColor =
-    type === ToastType.SUCCESS
-      ? "focus:ring-offset-green-800"
-      : "focus:ring-offset-red-800";
-
   return (
     <div className="fixed bottom-1 right-0 z-100 transition duration-500 ease-in-out opacity-100">
       <div
-        className={`max-w-xs text-sm text-white rounded-md shadow-lg mb-3 ml-3 ${bgColor}`}
+        className={`max-w-xs text-sm text-white rounded-md shadow-lg mb-3 ml-3 ${classTypes[type].bgColor}`}
         role="alert"
       >
         <div className="flex p-4">
@@ -28,7 +17,7 @@ function Toast({ text }: { text: string }) {
           <div className="ml-auto">
             <button
               type="button"
-              className={`inline-flex flex-shrink-0 justify-center items-center h-4 w-4 rounded-md text-white/[.5] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 ${ringOffsetColor} ${ringColor} transition-all text-sm ${darkRingColor}`}
+              className={`inline-flex flex-shrink-0 justify-center items-center h-4 w-4 rounded-md text-white/[.5] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 ${classTypes[type].ringOffsetColor} ${classTypes[type].ringColor} transition-all text-sm ${classTypes[type].darkRingColor}`}
               onClick={() => setToast(ToastType.SUCCESS, "")}
             >
               <span className="sr-only">Close</span>

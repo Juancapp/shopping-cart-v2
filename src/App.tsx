@@ -11,15 +11,20 @@ import Button from "./components/assets/Button";
 import { useToastStore } from "./zustand/store";
 import Toast from "./components/assets/Toast";
 import Purchases from "./components/pages/Purchases";
+import { FirstTime } from "./types";
+import ProfilePicture from "./components/assets/ProfilePicture";
+import { useUser } from "./services/user/query";
 
 function App() {
   const name = localStorage.getItem("name");
   const [inputValue, setInputValue] = useState("");
   const { text } = useToastStore((state) => state);
+  const userQuery = useUser();
+  const firstTime = userQuery?.data?.data?.firstTime;
 
   return (
     <>
-      {!name?.length && (
+      {!name?.length ? (
         <Modal>
           <h1 className="text-2xl text-white font-bold">User</h1>
           <p className="italic text-white text-sm mt-2">
@@ -41,6 +46,8 @@ function App() {
             }}
           />
         </Modal>
+      ) : (
+        firstTime === FirstTime.TRUE && <ProfilePicture />
       )}
       <div
         className={`font-sans h-full w-full ${

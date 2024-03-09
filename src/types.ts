@@ -30,10 +30,16 @@ export interface Product {
   image: string;
 }
 
+export enum FirstTime {
+  TRUE = "true",
+  FALSE = "false",
+}
+
 export interface User {
   _id: string;
   name: string;
   products: { quantity: number; product: Product }[];
+  firstTime: FirstTime;
 }
 
 export interface ProductsData {

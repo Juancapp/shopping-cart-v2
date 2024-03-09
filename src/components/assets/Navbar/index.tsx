@@ -9,6 +9,7 @@ import Cart from "./assets/Cart";
 import NavMenu from "../NavMenu";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Ping from "../Ping";
 
 function Navbar() {
   const searchParams = useSearchParams();
@@ -159,11 +160,12 @@ function Navbar() {
                             item.current
                               ? "shadow-2xl text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "rounded-md px-3 py-2 text-sm font-medium cursor-pointer"
+                            "rounded-md px-3 py-2 text-sm font-medium cursor-pointer flex"
                           )}
                           aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
+                          {item.name === "Documentation" && <Ping />}
                         </div>
                       ))}
                     </div>
@@ -193,6 +195,7 @@ function Navbar() {
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
+                    {item.name === "Documentation" && <Ping />}
                   </Disclosure.Button>
                 ))}
               </div>

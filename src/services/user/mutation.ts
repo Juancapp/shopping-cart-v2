@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { putRequest, url } from "../../config/api";
-import { User } from "../../types";
+import { patchRequest, putRequest, url } from "../../config/api";
+import { FirstTime, User } from "../../types";
 import { AxiosResponse } from "axios";
 
 export const useAddOneItemMutation = (userId: string, productId: string) => {
@@ -14,6 +14,29 @@ export const useAddOneItemMutation = (userId: string, productId: string) => {
         {}
       );
       return response;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+};
+
+export const useEditUserMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    void,
+    Error,
+    { _id: string; body: { firstTime: FirstTime } }
+  >({
+    mutationKey: ["editItem"],
+    mutationFn: async (variables) => {
+      await patchRequest<{ firstTime: FirstTime }>(
+        `${url}/user/${variables._id}`,
+        variables.body
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import Button, { ButtonVariant } from "../Button";
 import { useMutation } from "@tanstack/react-query";
@@ -6,6 +6,9 @@ import { postRequest } from "../../../config/api";
 import Spinner from "../Spinner";
 import { useToastStore } from "../../../zustand/store";
 import { ToastType } from "../../../zustand/types";
+import { useUser } from "../../../services/user/query";
+import { useEditUserMutation } from "../../../services/user/mutation";
+import { FirstTime } from "../../../types";
 
 interface ParamsType {
   userId: string;
@@ -14,21 +17,20 @@ interface ParamsType {
 
 function ProfilePicture({
   setModalDisplay,
-  userId,
-  userName,
 }: {
-  setModalDisplay: (arg0: boolean) => void;
-  userId: string;
-  userName: string;
+  setModalDisplay?: (arg0: boolean) => void;
 }) {
-  const urlImg = `https://${import.meta.env.VITE_APP_BUCKET_NAME}.s3.${
-    import.meta.env.VITE_APP_REGION
-  }.amazonaws.com/${
-    import.meta.env.VITE_APP_FOLDER_NAME
-  }/${userId}.jpg?${new Date().getTime()}`;
+  const userQuery = useUser();
+  const userId = userQuery?.data?.data?._id || "";
+  const userName = userQuery?.data?.data?.name || "";
+  const firstTime = userQuery?.data?.data?.firstTime;
 
-  const [imageSrc, setImageSrc] = useState(urlImg);
+  const [imageSrc, setImageSrc] = useState(
+    "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg"
+  );
   const { setToast } = useToastStore((state) => state);
+
+  const editUserMutation = useEditUserMutation();
 
   const postPictureMutation = useMutation<void, Error, ParamsType>({
     mutationKey: ["postPicture"],
@@ -40,9 +42,19 @@ function ProfilePicture({
     },
     onSuccess: async () => {
       setToast(ToastType.SUCCESS, "Profile photo changed successfully");
-      setModalDisplay(false);
+      setModalDisplay && setModalDisplay(false);
     },
   });
+
+  useEffect(() => {
+    setImageSrc(
+      `https://${import.meta.env.VITE_APP_BUCKET_NAME}.s3.${
+        import.meta.env.VITE_APP_REGION
+      }.amazonaws.com/${
+        import.meta.env.VITE_APP_FOLDER_NAME
+      }/${userId}.jpg?${new Date().getTime()}`
+    );
+  }, [userQuery?.dataUpdatedAt]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -64,6 +76,12 @@ function ProfilePicture({
     };
 
     postPictureMutation.mutate(params);
+    if (firstTime === FirstTime.TRUE) {
+      editUserMutation.mutate({
+        _id: userId,
+        body: { firstTime: FirstTime.FALSE },
+      });
+    }
   };
 
   return (
@@ -101,7 +119,23 @@ function ProfilePicture({
       </div>
       <h2 className="text-white text-xl self-center w-min mt-4">{userName}</h2>
       <div className="self-center md:self-end mt-6 flex gap-2">
-        <Button text="Exit" onClick={() => setModalDisplay(false)} />
+        <Button
+          text={firstTime === FirstTime.TRUE ? "Skip now" : "Exit"}
+          onClick={() => {
+            if (firstTime === FirstTime.TRUE) {
+              editUserMutation.mutate({
+                _id: userId,
+                body: { firstTime: FirstTime.FALSE },
+              });
+              setToast(
+                ToastType.INFO,
+                'You can change it in "your profile" option'
+              );
+            } else {
+              setModalDisplay && setModalDisplay(false)!;
+            }
+          }}
+        />
         <Button
           variant={ButtonVariant.BLACK}
           onClick={handleSubmit}

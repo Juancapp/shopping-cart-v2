@@ -7,6 +7,9 @@ import { JSX } from "react/jsx-runtime";
 import { useUser } from "../../../services/user/query";
 import { useToastStore } from "../../../zustand/store";
 import { ToastType } from "../../../zustand/types";
+import PageButton from "../../assets/PageButton";
+import { ChevronLeftIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
 
 let loaders: JSX.Element[] = [];
 
@@ -68,16 +71,19 @@ function ProductsContainer() {
               );
             })}
       </div>
-      <div className="flex flex-row">
-        {page > 1 && (
-          <button onClick={() => handlePreviousPage()}>Previous</button>
-        )}
-        <div>
-          {page} of {data?.totalPages}
-        </div>
-        {page < data?.totalPages! && (
-          <button onClick={() => handleNextPage()}>Next</button>
-        )}
+      <div className="flex flex-row gap-3 items-center">
+        <PageButton disabled={page <= 1} onClick={() => handlePreviousPage()}>
+          <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+        </PageButton>
+        <p className="text-gray-700">
+          page {page} of {data?.totalPages}
+        </p>
+        <PageButton
+          disabled={page >= data?.totalPages!}
+          onClick={() => handleNextPage()}
+        >
+          <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+        </PageButton>
       </div>
     </div>
   );
