@@ -43,7 +43,7 @@ function Purchases() {
           <thead>
             <tr className="px-10 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               {headers.map((header) => (
-                <th>{header}</th>
+                <th key={header}>{header}</th>
               ))}
             </tr>
           </thead>
@@ -51,10 +51,13 @@ function Purchases() {
             {tableData.map((purchase: PurchaseTable) => {
               const keys = Object.keys(purchase) as (keyof PurchaseTable)[];
               return (
-                <tr className="hover:bg-gray-100">
-                  {keys.map((key) => {
+                <tr key={purchase._id} className="hover:bg-gray-100">
+                  {keys.map((key, index) => {
                     return (
-                      <td className="px-10 py-5 border-b border-gray-200 bg-white text-sm">
+                      <td
+                        key={index}
+                        className="px-10 py-5 border-b border-gray-200 bg-white text-sm"
+                      >
                         {key !== "products" ? (
                           key === "_id" ? (
                             <button className="text-blue-600 hover:text-blue-900">
@@ -75,8 +78,8 @@ function Purchases() {
                             </p>
                           )
                         ) : (
-                          purchase[key].map((product) => (
-                            <>
+                          purchase[key].map((product, index) => (
+                            <div key={index}>
                               <p>{product.product.title}</p>
                               <p>x{product.quantity}</p>
                               <img
@@ -84,7 +87,7 @@ function Purchases() {
                                 src={product.product.image}
                                 alt={product.product.title}
                               />
-                            </>
+                            </div>
                           ))
                         )}
                       </td>

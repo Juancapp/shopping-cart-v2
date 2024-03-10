@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   useAddOneItemMutation,
   useRemoveAllItemsMutation,
@@ -16,6 +17,8 @@ function Card(
   const { title, price, image, rating, _id, products, userId, category } =
     props;
 
+  const navigate = useNavigate();
+
   const addItem = useAddOneItemMutation(userId, _id);
   const removeAllItems = useRemoveAllItemsMutation(userId, _id);
 
@@ -23,7 +26,10 @@ function Card(
     !!products.length && products.some((item) => item.product._id === _id);
 
   return (
-    <div className="h-96 flex flex-col py-4 px-3 justify-between card max-w-sm rounded-lg overflow-hidden shadow-lg bg-white">
+    <div
+      onClick={() => navigate(`../product/${_id}`)}
+      className="h-96 flex flex-col py-4 cursor-pointer px-3 justify-between card max-w-sm rounded-lg overflow-hidden shadow-lg bg-white"
+    >
       <div className="card-image h-1/2">
         <img className="object-cover h-full" src={image} alt="Shoes" />
       </div>
@@ -34,7 +40,10 @@ function Card(
       <div className="card-action flex justify-end">
         <Button
           text="Add to cart"
-          onClick={() => addItem.mutate()}
+          onClick={(e) => {
+            e.stopPropagation();
+            addItem.mutate();
+          }}
           disabled={addItem.isPending || removeAllItems.isPending}
         >
           {addItem.isPending || removeAllItems.isPending ? (

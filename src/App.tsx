@@ -5,7 +5,6 @@ import Modal from "./components/assets/Modal";
 
 import Shopping from "./components/pages/Shopping";
 import ProductsContainer from "./components/pages/Home";
-import Home from "./components/pages/Home/";
 import { useState } from "react";
 import Button from "./components/assets/Button";
 import { useToastStore } from "./zustand/store";
@@ -14,6 +13,7 @@ import Purchases from "./components/pages/Purchases";
 import { FirstTime } from "./types";
 import ProfilePicture from "./components/assets/ProfilePicture";
 import { useUser } from "./services/user/query";
+import Product from "./components/pages/Home/Product";
 
 function App() {
   const name = localStorage.getItem("name");
@@ -23,7 +23,7 @@ function App() {
   const firstTime = userQuery?.data?.data?.firstTime;
 
   return (
-    <>
+    <div className="h-full">
       {!name?.length ? (
         <Modal>
           <h1 className="text-2xl text-white font-bold">User</h1>
@@ -59,7 +59,7 @@ function App() {
           <Routes>
             <Route path="/" element={<RedirectToHome />} />
             <Route path="/home" element={<ProductsContainer />} />
-            <Route path="/product/:id" element={<Home />} />
+            <Route path="/product/:id" element={<Product />} />
             <Route path="/shopping" element={<Shopping />} />
             <Route path="/purchases" element={<Purchases />} />
             <Route
@@ -70,7 +70,7 @@ function App() {
         </BrowserRouter>
       </div>
       {!!text.length && <Toast text={text} />}
-    </>
+    </div>
   );
 }
 

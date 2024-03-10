@@ -112,3 +112,27 @@ export const useEditItemsMutation = (
     },
   });
 };
+
+export const useBuyItemMutation = (
+  userId: string,
+  productId: string,
+  quantity: number
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<AxiosResponse<User, any>, Error>({
+    mutationKey: ["buyItem", userId, productId, quantity],
+    mutationFn: async () => {
+      const response = await putRequest<User>(
+        `${url}/user/buyItem/${userId}/${productId}/${quantity}`,
+        {}
+      );
+      return response;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+};
