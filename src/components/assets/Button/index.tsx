@@ -3,6 +3,7 @@ import { ButtonHTMLAttributes } from "react";
 export enum ButtonVariant {
   PRIMARY = "bg-gray-800",
   BLACK = "bg-gray-900",
+  RED = "bg-white border-2 text-red-800 hover:bg-red-800 hover:text-white",
 }
 
 function Button(

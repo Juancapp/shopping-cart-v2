@@ -38,12 +38,16 @@ function App() {
             className="bg-gray-900 px-2 text-white border-[1px] border-solid border-gray-300 rounded mb-4 mt-4"
             onChange={(e) => setInputValue(e.target.value)}
           />
+          {inputValue.length < 3 && (
+            <p className="text-red-800">User must have 3 or more characters</p>
+          )}
           <Button
             text="Confirm"
             onClick={() => {
               localStorage.setItem("name", inputValue);
               window.location.reload();
             }}
+            disabled={inputValue.length < 3}
           />
         </Modal>
       ) : (

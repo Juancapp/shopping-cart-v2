@@ -34,3 +34,8 @@ export const putRequest = async <T>(apiRoute: string, body: object) => {
   const response = await api.put<T>(apiRoute, body);
   return response;
 };
+
+export const deleteRequest = async <T>(apiRoute: string) => {
+  const response = await api.delete<T>(apiRoute);
+  return response;
+};

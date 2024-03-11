@@ -93,6 +93,10 @@ function ProfilePicture({
             src={imageSrc}
             alt="Profile picture"
             className="w-full h-full object-cover"
+            onError={({ currentTarget }) => {
+              currentTarget.src =
+                "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
+            }}
           />
         </div>
         <label className="cursor-pointer absolute bottom-0 right-0">
