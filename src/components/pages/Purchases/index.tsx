@@ -5,6 +5,9 @@ import { Purchase, Status } from "../../../types";
 import Button, { ButtonVariant } from "../../assets/Button";
 import { usePurchaseMutation } from "../../../services/purchases/mutations";
 import Modal from "../../assets/Modal";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Pdf from "../../assets/Pdf";
+import { formatDate } from "../../../helpers/date";
 
 type PurchaseTable = Omit<Purchase, "totalQuantity" | "user">;
 
@@ -28,7 +31,7 @@ function Purchases() {
       purchasesData.map((purchase) => {
         {
           const filteredPurchase = {
-            createdAt: purchase.createdAt,
+            createdAt: formatDate(purchase?.createdAt!),
             products: purchase.products,
             totalPrice: purchase.totalPrice,
             status: purchase.status,
@@ -94,9 +97,36 @@ function Purchases() {
                         >
                           {key !== "products" ? (
                             key === "_id" ? (
-                              <button className="text-blue-600 hover:text-blue-900">
-                                Generate PDF
-                              </button>
+                              purchase.status === Status.PENDING ? (
+                                <p>
+                                  Purchase must be "success" to generate PDF
+                                </p>
+                              ) : (
+                                <PDFDownloadLink
+                                  document={
+                                    <Pdf
+                                      userName={userQuery?.data?.data?.name!}
+                                      purchase={
+                                        purchasesData.find(
+                                          (foundPurchase) =>
+                                            foundPurchase?._id! ===
+                                            purchase?._id!
+                                        )!
+                                      }
+                                    />
+                                  }
+                                  fileName={`${purchase.createdAt}-${userQuery?.data?.data?.name}-Cocoa-Purchase.pdf`}
+                                  className="text-blue-700"
+                                >
+                                  {({ loading, error }) =>
+                                    error
+                                      ? "Error generating document"
+                                      : loading
+                                      ? "Loading document..."
+                                      : "Generate PDF"
+                                  }
+                                </PDFDownloadLink>
+                              )
                             ) : (
                               <>
                                 <p
