@@ -22,8 +22,6 @@ function App() {
   const userQuery = useUser();
   const firstTime = userQuery?.data?.data?.firstTime;
 
-  console.log("sda");
-
   return (
     <div className="h-full">
       {!name?.length ? (
