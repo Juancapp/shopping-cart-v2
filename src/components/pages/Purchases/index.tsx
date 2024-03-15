@@ -3,11 +3,11 @@ import { usePurchases } from "../../../services/purchases/query";
 import { useUser } from "../../../services/user/query";
 import { Purchase, Status } from "../../../types";
 import Button, { ButtonVariant } from "../../assets/Button";
-import { usePurchaseMutation } from "../../../services/purchases/mutations";
 import Modal from "../../assets/Modal";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Pdf from "../../assets/Pdf";
 import { formatDate } from "../../../helpers/date";
+import Clock from "../../assets/Clock";
 
 type PurchaseTable = Omit<Purchase, "totalQuantity" | "user">;
 
@@ -16,22 +16,42 @@ function Purchases() {
 
   const purchasesQuery = usePurchases(userQuery?.data?.data?._id!);
 
-  const purchaseMutation = usePurchaseMutation();
+  // const usePurchaseMutation = useMutation<void, Error, Omit<Purchase, "_id">>({
+  //   mutationKey: ["postPurchase"],
+  //   mutationFn: async (variables: Omit<Purchase, "_id">) => {
+  //     await putRequest<Omit<Purchase, "_id">>(`${url}/purchases`, variables);
+  //   },
+  //   onSuccess: async () => {
+  //     await queryClient.invalidateQueries({
+  //       queryKey: ["purchases"],
+  //     });
+  //     await queryClient.invalidateQueries({
+  //       queryKey: ["user"],
+  //     });
+  //     setModalDisplay(false);
+  //     setToast(ToastType.SUCCESS, "Products successfully purchased!");
+  //   },
 
-  const purchasesData = purchasesQuery?.data?.data || [];
+  //   onError: async (error) => {
+  //     setToast(ToastType.ERROR, error.message);
+  //   },
+  // });
+
+  const purchasesData =
+    purchasesQuery?.data?.pages.flatMap((page) => page.data.purchases) || [];
 
   const [modalId, setModalId] = useState("");
 
   useEffect(() => {
-    purchasesQuery.refetch();
-  }, [userQuery?.dataUpdatedAt]);
+    purchasesQuery?.refetch();
+  }, [userQuery?.data?.data?._id]);
 
   const tableData: PurchaseTable[] = useMemo(
     () =>
       purchasesData.map((purchase) => {
         {
           const filteredPurchase = {
-            createdAt: formatDate(purchase?.createdAt!),
+            createdAt: purchase?.createdAt!,
             products: purchase.products,
             totalPrice: purchase.totalPrice,
             status: purchase.status,
@@ -46,6 +66,29 @@ function Purchases() {
   );
 
   const headers = ["Date", "Products", "Total price", "Status", "Generate PDF"];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+        purchasesQuery?.hasNextPage &&
+        !purchasesQuery?.isFetchingNextPage
+      ) {
+        purchasesQuery?.fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [purchasesQuery?.hasNextPage, purchasesQuery?.isFetchingNextPage]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      purchasesQuery.refetch();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
@@ -98,9 +141,15 @@ function Purchases() {
                           {key !== "products" ? (
                             key === "_id" ? (
                               purchase.status === Status.PENDING ? (
-                                <p>
-                                  Purchase must be "success" to generate PDF
-                                </p>
+                                <div className="flex flex-col">
+                                  <span>
+                                    Purchase must be "success" to generate PDF
+                                  </span>
+                                  <span>or</span>
+                                  <span className="text-red-600 cursor-pointer">
+                                    Force purchase to success
+                                  </span>
+                                </div>
                               ) : (
                                 <PDFDownloadLink
                                   document={
@@ -138,8 +187,24 @@ function Purchases() {
                                       : "text-gray-900"
                                   }`}
                                 >
+                                  {key === "status" &&
+                                    purchase.status === Status.PENDING && (
+                                      <div className="relative">
+                                        <Clock
+                                          minutes={Math.round(
+                                            (Number(new Date()) -
+                                              Number(
+                                                new Date(purchase.createdAt!)
+                                              )) /
+                                              60000
+                                          )}
+                                        />
+                                      </div>
+                                    )}
                                   {key === "totalPrice" && "$"}
-                                  {purchase[key]}
+                                  {key !== "createdAt"
+                                    ? purchase[key]
+                                    : formatDate(purchase[key]!)}
                                 </p>
                                 {key === "status" &&
                                   purchase[key] === Status.PENDING && (
@@ -174,6 +239,7 @@ function Purchases() {
           </table>
         </div>
       </div>
+      {purchasesQuery.isFetchingNextPage && <h1>Loading...</h1>}
     </>
   );
 }
