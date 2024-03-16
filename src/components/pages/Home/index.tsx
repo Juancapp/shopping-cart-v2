@@ -75,11 +75,14 @@ function ProductsContainer() {
         <PageButton disabled={page <= 1} onClick={() => handlePreviousPage()}>
           <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
         </PageButton>
-        <p className="text-gray-700">
-          page {page} of {data?.totalPages}
-        </p>
+        {data?.products.length && (
+          <p className="text-gray-700">
+            page {page} of {data?.totalPages}
+          </p>
+        )}
+
         <PageButton
-          disabled={page >= data?.totalPages!}
+          disabled={!data?.products.length || page >= data?.totalPages!}
           onClick={() => handleNextPage()}
         >
           <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />

@@ -9,42 +9,55 @@ import Pdf from "../../assets/Pdf";
 import { formatDate } from "../../../helpers/date";
 import Clock from "../../assets/Clock";
 
+import { usePurchaseMutation } from "../../../services/purchases/mutations";
+
 type PurchaseTable = Omit<Purchase, "totalQuantity" | "user">;
+
+enum ReqEnum {
+  PUT = "put",
+  DELETE = "delete",
+}
 
 function Purchases() {
   const userQuery = useUser();
 
+  const headers = ["Date", "Products", "Total price", "Status", "Generate PDF"];
+
   const purchasesQuery = usePurchases(userQuery?.data?.data?._id!);
-
-  // const usePurchaseMutation = useMutation<void, Error, Omit<Purchase, "_id">>({
-  //   mutationKey: ["postPurchase"],
-  //   mutationFn: async (variables: Omit<Purchase, "_id">) => {
-  //     await putRequest<Omit<Purchase, "_id">>(`${url}/purchases`, variables);
-  //   },
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({
-  //       queryKey: ["purchases"],
-  //     });
-  //     await queryClient.invalidateQueries({
-  //       queryKey: ["user"],
-  //     });
-  //     setModalDisplay(false);
-  //     setToast(ToastType.SUCCESS, "Products successfully purchased!");
-  //   },
-
-  //   onError: async (error) => {
-  //     setToast(ToastType.ERROR, error.message);
-  //   },
-  // });
 
   const purchasesData =
     purchasesQuery?.data?.pages.flatMap((page) => page.data.purchases) || [];
 
-  const [modalId, setModalId] = useState("");
+  const purchaseMutation = usePurchaseMutation(userQuery?.data?.data?._id!);
+
+  const [modal, setModal] = useState({ type: ReqEnum.DELETE, id: "" });
 
   useEffect(() => {
     purchasesQuery?.refetch();
   }, [userQuery?.data?.data?._id]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+        purchasesQuery?.hasNextPage &&
+        !purchasesQuery?.isFetchingNextPage
+      ) {
+        purchasesQuery?.fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [purchasesQuery?.hasNextPage, purchasesQuery?.isFetchingNextPage]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      purchasesQuery.refetch();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const tableData: PurchaseTable[] = useMemo(
     () =>
@@ -65,52 +78,49 @@ function Purchases() {
     [purchasesQuery]
   );
 
-  const headers = ["Date", "Products", "Total price", "Status", "Generate PDF"];
+  const modalOptions = {
+    [ReqEnum.DELETE]: {
+      h1: "Cancel",
+      title: "¿Cancel purchase? Your money will be refunded",
+    },
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-        purchasesQuery?.hasNextPage &&
-        !purchasesQuery?.isFetchingNextPage
-      ) {
-        purchasesQuery?.fetchNextPage();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [purchasesQuery?.hasNextPage, purchasesQuery?.isFetchingNextPage]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      purchasesQuery.refetch();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+    [ReqEnum.PUT]: {
+      h1: "Force to Success",
+      title:
+        "Force to Success? Your purchase can not be cancelled and refunded",
+    },
+  };
 
   return (
     <>
-      {!!modalId.length && (
+      {!!modal.id.length && (
         <Modal>
-          <h1 className="text-white text-2xl mb-3">Cancel</h1>
+          <h1 className="text-white text-2xl mb-3">
+            {modalOptions[modal.type].h1}
+          </h1>
           <p className="text-white mb-3 text-sm">
-            ¿Cancel purchase? Your money will be refunded{" "}
+            {modalOptions[modal.type].title}
           </p>
           <div className="flex self-end gap-3">
             <Button
               variant={ButtonVariant.PRIMARY}
               text="Cancel"
-              onClick={() => setModalId("")}
+              onClick={() =>
+                setModal((prevValue) => {
+                  return { ...prevValue, id: "" };
+                })
+              }
             ></Button>
             <Button
               variant={ButtonVariant.BLACK}
               text="Confirm"
               onClick={async () => {
-                const res = await purchaseMutation.mutateAsync(modalId);
+                const res = await purchaseMutation.mutateAsync({
+                  id: modal.id,
+                  reqType: modal.type,
+                });
                 if (res.status < 400) {
-                  setModalId("");
+                  setModal({ ...modal, id: "" });
                 }
               }}
             ></Button>
@@ -146,7 +156,15 @@ function Purchases() {
                                     Purchase must be "success" to generate PDF
                                   </span>
                                   <span>or</span>
-                                  <span className="text-red-600 cursor-pointer">
+                                  <span
+                                    className="text-red-600 cursor-pointer"
+                                    onClick={() =>
+                                      setModal({
+                                        type: ReqEnum.PUT,
+                                        id: purchase._id,
+                                      })
+                                    }
+                                  >
                                     Force purchase to success
                                   </span>
                                 </div>
@@ -211,7 +229,12 @@ function Purchases() {
                                     <Button
                                       text="cancel"
                                       variant={ButtonVariant.RED}
-                                      onClick={() => setModalId(purchase._id)}
+                                      onClick={() =>
+                                        setModal({
+                                          type: ReqEnum.DELETE,
+                                          id: purchase._id,
+                                        })
+                                      }
                                     />
                                   )}
                               </>

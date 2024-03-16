@@ -7,7 +7,7 @@ function Toast({ text }: { text: string }) {
   const { setToast, type } = toastStore;
 
   return (
-    <div className="fixed bottom-1 right-0 z-100 transition duration-500 ease-in-out opacity-100">
+    <div className="fixed bottom-1 right-0 z-100 transition duration-500 ease-in-out opacity-100 mr-4">
       <div
         className={`max-w-xs text-sm text-white rounded-md shadow-lg mb-3 ml-3 ${classTypes[type].bgColor}`}
         role="alert"

@@ -9,7 +9,7 @@ export const useUser = () => {
     return useQuery({
       queryFn: async () => await getRequest<User>(`${url}/user/${name}`),
       queryKey: ["user"],
-      staleTime: 5 * 60 * 1000,
+      staleTime: 20 * 60 * 1000,
     });
   }
 };

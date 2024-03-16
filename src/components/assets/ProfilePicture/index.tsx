@@ -61,6 +61,14 @@ function ProfilePicture({
       return;
     }
 
+    const file = e.target.files[0];
+    const fileType = file.type;
+
+    if (fileType !== "image/jpeg") {
+      alert("The file must be jpg");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       setImageSrc(reader.result as string);

@@ -5,7 +5,7 @@ import Modal from "./components/assets/Modal";
 
 import Shopping from "./components/pages/Shopping";
 import ProductsContainer from "./components/pages/Home";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./components/assets/Button";
 import { useToastStore } from "./zustand/store";
 import Toast from "./components/assets/Toast";
@@ -14,6 +14,7 @@ import { FirstTime } from "./types";
 import ProfilePicture from "./components/assets/ProfilePicture";
 import { useUser } from "./services/user/query";
 import Product from "./components/pages/Home/Product";
+import { ToastType } from "./zustand/types";
 
 function App() {
   const name = localStorage.getItem("name");
@@ -21,6 +22,16 @@ function App() {
   const { text } = useToastStore((state) => state);
   const userQuery = useUser();
   const firstTime = userQuery?.data?.data?.firstTime;
+
+  const { setToast } = useToastStore((state) => state);
+
+  useEffect(() => {
+    if (userQuery?.isError) {
+      setToast(ToastType.ERROR, userQuery?.error.message);
+    }
+  }, [userQuery?.dataUpdatedAt]);
+
+  const regExp = /^[a-zA-Z]+$/;
 
   return (
     <div className="h-full">
@@ -33,22 +44,31 @@ function App() {
             cart, your purchases and profile picture are stored for each user.
             Take advantage of the features!
           </p>
-          <input
-            type="text"
-            className="bg-gray-900 px-2 text-white border-[1px] border-solid border-gray-300 rounded mb-4 mt-4"
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          {inputValue.length < 3 && (
-            <p className="text-red-800">User must have 3 or more characters</p>
-          )}
-          <Button
-            text="Confirm"
-            onClick={() => {
+          <form
+            action=""
+            onSubmit={(event) => {
+              event?.preventDefault();
               localStorage.setItem("name", inputValue);
               window.location.reload();
             }}
-            disabled={inputValue.length < 3}
-          />
+          >
+            <input
+              type="text"
+              className="bg-gray-900 px-2 text-white border-[1px] border-solid border-gray-300 rounded mb-4 mt-4"
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            {(inputValue.length < 3 || !regExp.test(inputValue)) && (
+              <p className="text-red-800 text-sm">
+                User must have 3 or more characters and all characters must be
+                letters
+              </p>
+            )}
+            <Button
+              type="submit"
+              text="Confirm"
+              disabled={inputValue.length < 3 || !regExp.test(inputValue)}
+            />
+          </form>
         </Modal>
       ) : (
         firstTime === FirstTime.TRUE && <ProfilePicture />

@@ -8,6 +8,7 @@ export const useProductsQuery = (params: object) => {
     queryKey: ["products", { params }],
     placeholderData: keepPreviousData,
     staleTime: 60 * 1000 * 5,
+    retry: 1,
   });
 };
 
