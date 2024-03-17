@@ -32,6 +32,11 @@ function Navbar() {
       href: "/documentation",
       current: location.pathname === "/documentation",
     },
+    {
+      name: "Payment methods",
+      href: "/payment",
+      current: location.pathname === "/payment",
+    },
   ]);
 
   const handleClick = (name: string) => {
