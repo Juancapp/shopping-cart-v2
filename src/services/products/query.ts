@@ -3,13 +3,17 @@ import { getRequest, url } from "../../config/api";
 import { Product, ProductsData } from "../../types";
 
 export const useProductsQuery = (params: object) => {
-  return useQuery({
-    queryFn: () => getRequest<ProductsData>(`${url}/products`, params),
-    queryKey: ["products", { params }],
-    placeholderData: keepPreviousData,
-    staleTime: 60 * 1000 * 5,
-    retry: 1,
-  });
+  const name = localStorage.getItem("name");
+
+  if (name) {
+    return useQuery({
+      queryFn: () => getRequest<ProductsData>(`${url}/products`, params),
+      queryKey: ["products", { params }],
+      placeholderData: keepPreviousData,
+      staleTime: 60 * 1000 * 5,
+      retry: 1,
+    });
+  }
 };
 
 export const useProduct = (id: string) => {

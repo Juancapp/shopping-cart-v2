@@ -28,14 +28,14 @@ function Navbar() {
       current: location.pathname === "purchases",
     },
     {
-      name: "Documentation",
-      href: "/documentation",
-      current: location.pathname === "/documentation",
-    },
-    {
       name: "Payment methods",
       href: "/payment",
       current: location.pathname === "/payment",
+    },
+    {
+      name: "Documentation",
+      href: "/documentation",
+      current: location.pathname === "/documentation",
     },
   ]);
 

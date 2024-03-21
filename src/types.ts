@@ -35,11 +35,19 @@ export enum FirstTime {
   FALSE = "false",
 }
 
+export type PaymentMethodType = {
+  number: string;
+  expiryDate: string;
+  cvc: string;
+  isDefault: boolean;
+};
+
 export interface User {
   _id: string;
   name: string;
   products: { quantity: number; product: Product }[];
   firstTime: FirstTime;
+  paymentMethods: PaymentMethodType[];
 }
 
 export interface ProductsData {

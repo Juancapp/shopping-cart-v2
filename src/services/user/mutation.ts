@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { patchRequest, putRequest, url } from "../../config/api";
-import { FirstTime, User } from "../../types";
-import { AxiosResponse } from "axios";
+import { FirstTime, PaymentMethodType, User } from "../../types";
+import { AxiosError, AxiosResponse } from "axios";
+import { useToastStore } from "../../zustand/store";
+import { ToastType } from "../../zustand/types";
 
 export const useAddOneItemMutation = (userId: string, productId: string) => {
   const queryClient = useQueryClient();
@@ -42,6 +44,105 @@ export const useEditUserMutation = () => {
       await queryClient.invalidateQueries({
         queryKey: ["user"],
       });
+    },
+  });
+};
+
+export const useAddPurchaseMethodMutation = () => {
+  const queryClient = useQueryClient();
+  const { setToast } = useToastStore((state) => state);
+
+  return useMutation<
+    AxiosResponse<User, any>,
+    Error,
+    { _id: string; body: PaymentMethodType }
+  >({
+    mutationKey: ["addPurchase"],
+    mutationFn: async (variables) => {
+      try {
+        const res = await putRequest<User>(
+          `${url}/user/payment/${variables._id}`,
+          variables.body
+        );
+        return res;
+      } catch (error) {
+        throw new Error("Failed to add payment method");
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+      setToast(ToastType.SUCCESS, "Payment method added successfully");
+    },
+    onError: async (error) => {
+      setToast(ToastType.ERROR, error.message);
+    },
+  });
+};
+
+export const useSetToDefaultPaymentMethodMutation = () => {
+  const queryClient = useQueryClient();
+  const { setToast } = useToastStore((state) => state);
+
+  return useMutation<
+    AxiosResponse<User, any>,
+    AxiosError<{ message?: string }>,
+    { _id: string; body: { number: string; expiryDate: string } }
+  >({
+    mutationKey: ["setToDefault"],
+    mutationFn: async (variables) => {
+      const res = await putRequest<User>(
+        `${url}/user/paymentToDefault/${variables._id}`,
+        variables.body
+      );
+      return res;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+      setToast(ToastType.SUCCESS, "Payment method set to default");
+    },
+    onError: async (error) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+      console.log(error);
+      setToast(ToastType.ERROR, error.response?.data?.message!);
+    },
+  });
+};
+
+export const useDeletePaymentMethodMutation = () => {
+  const queryClient = useQueryClient();
+  const { setToast } = useToastStore((state) => state);
+
+  return useMutation<
+    AxiosResponse<User, any>,
+    Error,
+    { _id: string; body: { number: string } }
+  >({
+    mutationKey: ["setToDefault"],
+    mutationFn: async (variables) => {
+      try {
+        const res = await putRequest<User>(
+          `${url}/user/removePaymentMethod/${variables._id}`,
+          variables.body
+        );
+        return res;
+      } catch (error) {
+        throw new Error("Failed to add payment method");
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+      setToast(ToastType.SUCCESS, "Payment method deleted");
+    },
+    onError: async (error) => {
+      setToast(ToastType.ERROR, error.message);
     },
   });
 };
