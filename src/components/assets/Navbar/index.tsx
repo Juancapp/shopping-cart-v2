@@ -19,6 +19,7 @@ function Navbar() {
   const orderParam = queryParams.get("order");
   const orderByParam = queryParams.get("orderBy");
   const navigate = useNavigate();
+  const name = localStorage.getItem("name");
 
   const [navigation, setNavigation] = useState([
     { name: "Home", href: "/home", current: location.pathname === "/home" },
@@ -179,7 +180,10 @@ function Navbar() {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <div className="flex gap-0 lg:gap-12 items-center">
                     <Cart />
-                    <NavMenu />
+                    <div className="flex items-center font-light text-sm">
+                      <p className="text-white">{name}</p>
+                      <NavMenu />
+                    </div>
                   </div>
                 </div>
               </div>

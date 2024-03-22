@@ -68,4 +68,5 @@ export interface Purchase {
   products: { quantity: number; product: Product }[];
   status: Status;
   createdAt?: string;
+  cardNumber: string;
 }

@@ -21,7 +21,14 @@ enum ReqEnum {
 function Purchases() {
   const userQuery = useUser();
 
-  const headers = ["Date", "Products", "Total price", "Status", "Generate PDF"];
+  const headers = [
+    "Date",
+    "Products",
+    "Total price",
+    "Status",
+    "Credit Card",
+    "Generate PDF",
+  ];
 
   const purchasesQuery = usePurchases(userQuery?.data?.data?._id!);
 
@@ -68,6 +75,7 @@ function Purchases() {
             products: purchase.products,
             totalPrice: purchase.totalPrice,
             status: purchase.status,
+            cardNumber: purchase.cardNumber,
             _id: purchase._id,
           };
 
@@ -220,6 +228,7 @@ function Purchases() {
                                       </div>
                                     )}
                                   {key === "totalPrice" && "$"}
+                                  {key === "cardNumber" && "****"}
                                   {key !== "createdAt"
                                     ? purchase[key]
                                     : formatDate(purchase[key]!)}

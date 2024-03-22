@@ -103,6 +103,7 @@ function Pdf({ purchase, userName }: { purchase: Purchase; userName: string }) {
         </View>
         <View style={styles.infoView}>
           <View>
+            <Text>Payment method: **** {purchase.cardNumber}</Text>
             <Text>User: {userName}</Text>
             <Text>COCOA SA</Text>
           </View>

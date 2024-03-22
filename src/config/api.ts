@@ -16,13 +16,13 @@ export const getRequest = async <T>(apiRoute: string, params?: object) => {
   return response;
 };
 
-export const postRequest = async <T>(apiRoute: string, body: T) => {
-  try {
-    const response = await api.post<T>(apiRoute, body);
-    return response;
-  } catch (error) {
-    throw error;
-  }
+export const postRequest = async <T>(
+  apiRoute: string,
+  body: T,
+  headers?: object
+) => {
+  const response = await api.post<T>(apiRoute, body, { headers });
+  return response;
 };
 
 export const patchRequest = async <T>(apiRoute: string, body: object) => {

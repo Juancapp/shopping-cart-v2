@@ -108,7 +108,6 @@ export const useSetToDefaultPaymentMethodMutation = () => {
       await queryClient.invalidateQueries({
         queryKey: ["user"],
       });
-      console.log(error);
       setToast(ToastType.ERROR, error.response?.data?.message!);
     },
   });

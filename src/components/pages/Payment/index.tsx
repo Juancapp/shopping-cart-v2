@@ -132,11 +132,13 @@ function Payment() {
                     <button
                       className="w-4 h-min"
                       onClick={() => setModalNumber(paymentMethod.number)}
-                      disabled={paymentMethod.isDefault}
+                      disabled={
+                        paymentMethod.isDefault && paymentMethods.length !== 1
+                      }
                     >
                       <TrashIcon
                         className={`${
-                          paymentMethod.isDefault
+                          paymentMethod.isDefault && paymentMethods.length !== 1
                             ? "text-gray-300"
                             : "text-gray-600"
                         }  w-4`}

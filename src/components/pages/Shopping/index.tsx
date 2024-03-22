@@ -10,18 +10,35 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../assets/Spinner";
 import { useToastStore } from "../../../zustand/store";
 import { ToastType } from "../../../zustand/types";
+import { AxiosError } from "axios";
 
 function Shopping() {
   const userQuery = useUser();
+  const userPaymentMethods = userQuery?.data?.data?.paymentMethods;
   const [modalDisplay, setModalDisplay] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { setToast } = useToastStore((state) => state);
+  const [inputValue, setInputValue] = useState("");
 
-  const usePurchaseMutation = useMutation<void, Error, Omit<Purchase, "_id">>({
+  const usePurchaseMutation = useMutation<
+    void,
+    AxiosError<{ message?: string }>,
+    {
+      data: Omit<Purchase, "_id">;
+      headers: { cvc: string };
+    }
+  >({
     mutationKey: ["postPurchase"],
-    mutationFn: async (variables: Omit<Purchase, "_id">) => {
-      await postRequest<Omit<Purchase, "_id">>(`${url}/purchases`, variables);
+    mutationFn: async (variables: {
+      data: Omit<Purchase, "_id">;
+      headers: { cvc: string };
+    }) => {
+      await postRequest<Omit<Purchase, "_id">>(
+        `${url}/purchases`,
+        variables.data,
+        variables.headers
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -35,7 +52,7 @@ function Shopping() {
     },
 
     onError: async (error) => {
-      setToast(ToastType.ERROR, error.message);
+      setToast(ToastType.ERROR, error.response?.data?.message!);
     },
   });
 
@@ -59,15 +76,24 @@ function Shopping() {
   );
 
   const handleConfirmClick = () => {
-    const body = {
-      user: userQuery?.data?.data._id!,
-      totalPrice: totalPrice!,
-      totalQuantity: totalQuantity!,
-      products: userQuery?.data?.data?.products!,
-      status: Status.PENDING,
+    const variables = {
+      data: {
+        user: userQuery?.data?.data._id!,
+        totalPrice: totalPrice!,
+        totalQuantity: totalQuantity!,
+        products: userQuery?.data?.data?.products!,
+        status: Status.PENDING,
+        cardNumber: userQuery?.data?.data?.paymentMethods
+          ?.find((payment) => payment.isDefault)
+          ?.number.slice(-4)!,
+      },
+
+      headers: {
+        cvc: inputValue,
+      },
     };
 
-    usePurchaseMutation.mutate(body);
+    usePurchaseMutation.mutate(variables);
   };
 
   useEffect(() => {
@@ -75,6 +101,10 @@ function Shopping() {
       navigate("/home");
     }
   }, [totalQuantity]);
+
+  const isNumber = /^[0-9]*$/;
+  const inputNotValidLength =
+    inputValue.length !== 3 && inputValue.length !== 4;
 
   return (
     <div className="w-full flex flex-col gap-5 justify-center py-10 lg:items-center">
@@ -94,6 +124,24 @@ function Shopping() {
                   the "My purchases" section for more information.
                 </span>
               </p>
+              <input
+                type="text"
+                className="bg-gray-900 px-2 text-white border-[1px] border-solid border-gray-300 rounded mb-4 mt-4"
+                onChange={(e) => {
+                  if (
+                    isNumber.test(e.target.value) &&
+                    e.target.value.length < 5
+                  ) {
+                    setInputValue(e.target.value);
+                  }
+                }}
+                value={inputValue}
+              />
+              {inputNotValidLength && (
+                <p className="text-red-600 text-sm">
+                  CVV must have 3 or 4 characters
+                </p>
+              )}
               <div className="flex w-min self-end gap-2">
                 <Button
                   text="Cancel"
@@ -104,6 +152,7 @@ function Shopping() {
                   text="Confirm"
                   variant={ButtonVariant.BLACK}
                   onClick={handleConfirmClick}
+                  disabled={inputNotValidLength}
                 />
               </div>
             </>
@@ -133,7 +182,13 @@ function Shopping() {
         </p>
         <Button
           disabled={totalQuantity === 0}
-          onClick={() => setModalDisplay(true)}
+          onClick={() => {
+            if (!userPaymentMethods?.length) {
+              navigate("/payment");
+            } else {
+              setModalDisplay(true);
+            }
+          }}
           text="Buy"
         />
       </div>
