@@ -17,6 +17,7 @@ import Product from "./components/pages/Home/Product";
 import { ToastType } from "./zustand/types";
 import Payment from "./components/pages/Payment";
 import { isCardExpired } from "./helpers/date";
+import Documentation from "./components/pages/Documentation";
 
 function App() {
   const name = localStorage.getItem("name");
@@ -92,10 +93,7 @@ function App() {
             <Route path="/shopping" element={<Shopping />} />
             <Route path="/purchases" element={<Purchases />} />
             <Route path="/payment" element={<Payment />} />
-            <Route
-              path="/documentation"
-              element={<h1>Documentation (work in progress)</h1>}
-            />
+            <Route path="/documentation" element={<Documentation />} />
           </Routes>
         </BrowserRouter>
       </div>
