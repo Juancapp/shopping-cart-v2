@@ -159,9 +159,6 @@ function Shopping() {
           )}
         </Modal>
       )}
-      <h1 className="text-6xl font-extrabold mb-20 self-center">
-        PRODUCT CART
-      </h1>
       {userQuery?.data?.data?.products.map((item) => {
         return (
           <ProductCard

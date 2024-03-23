@@ -56,7 +56,6 @@ function ProductsContainer() {
 
   return (
     <div className="px-[5%] py-20 flex flex-col gap-20 items-center">
-      <h1 className="text-5xl font-extrabold w-fit">PRODUCTS</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10 box-content">
         {productsQuery?.isFetching
           ? loaders.map((loader) => loader)
