@@ -10,6 +10,8 @@ import { formatDate } from "../../../helpers/date";
 import Clock from "../../assets/Clock";
 
 import { usePurchaseMutation } from "../../../services/purchases/mutations";
+import { useToastStore } from "../../../zustand/store";
+import { ToastType } from "../../../zustand/types";
 
 type PurchaseTable = Omit<Purchase, "totalQuantity" | "user">;
 
@@ -35,6 +37,8 @@ function Purchases() {
   const purchasesData =
     purchasesQuery?.data?.pages.flatMap((page) => page.data.purchases) || [];
 
+  const { setToast } = useToastStore((state) => state);
+
   const purchaseMutation = usePurchaseMutation(userQuery?.data?.data?._id!);
 
   const [modal, setModal] = useState({ type: ReqEnum.DELETE, id: "" });
@@ -42,6 +46,18 @@ function Purchases() {
   useEffect(() => {
     purchasesQuery?.refetch();
   }, [userQuery?.data?.data?._id]);
+
+  useEffect(() => {
+    if (userQuery?.isFetching) {
+      setToast(ToastType.INFO, "Loading...");
+    }
+  }, [userQuery?.isFetching]);
+
+  useEffect(() => {
+    if (userQuery?.isSuccess) {
+      setToast(ToastType.INFO, "");
+    }
+  }, [userQuery?.isSuccess]);
 
   useEffect(() => {
     const handleScroll = () => {

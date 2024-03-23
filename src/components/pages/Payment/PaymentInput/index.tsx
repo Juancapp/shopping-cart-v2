@@ -1,10 +1,10 @@
 import { usePaymentInputs, PaymentInputsWrapper } from "react-payment-inputs";
 import { SetStateAction, useMemo, useState } from "react";
 import images, { CardImages } from "react-payment-inputs/images";
-import ERROR_MESSAGES from "../constants";
 import Button from "../../../assets/Button";
 import { useAddPurchaseMethodMutation } from "../../../../services/user/mutation";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ERROR_MESSAGES, creditCardNumbers } from "../constants";
 
 const myImages: CardImages = images as unknown as CardImages;
 
@@ -70,23 +70,6 @@ function PaymentInput({
       deletePaymentInput(id);
     }
   };
-
-  const creditCardNumbers = [
-    "4032033939752890",
-    "5110925132447578",
-    "5110924884979128",
-    "376111376205440",
-    "349665599374055",
-    "4032031813624607",
-    "4032036425935002",
-    "6011515715729746",
-    "6011328907040538",
-    "5893519184972857",
-    "3538534151810655",
-    "3538534151810655",
-    "3538534151810655",
-    "3538534151810655",
-  ];
 
   const creditNumber = useMemo(
     () =>

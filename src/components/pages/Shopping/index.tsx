@@ -21,7 +21,7 @@ function Shopping() {
   const { setToast } = useToastStore((state) => state);
   const [inputValue, setInputValue] = useState("");
 
-  const usePurchaseMutation = useMutation<
+  const useAddPurchaseMutation = useMutation<
     void,
     AxiosError<{ message?: string }>,
     {
@@ -93,7 +93,7 @@ function Shopping() {
       },
     };
 
-    usePurchaseMutation.mutate(variables);
+    useAddPurchaseMutation.mutate(variables);
   };
 
   useEffect(() => {
@@ -110,7 +110,7 @@ function Shopping() {
     <div className="w-full flex flex-col gap-5 justify-center py-10 lg:items-center">
       {modalDisplay && (
         <Modal>
-          {usePurchaseMutation.isPending ? (
+          {useAddPurchaseMutation.isPending ? (
             <Spinner toModal={true} />
           ) : (
             <>

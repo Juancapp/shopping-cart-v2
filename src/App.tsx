@@ -16,6 +16,7 @@ import { useUser } from "./services/user/query";
 import Product from "./components/pages/Home/Product";
 import { ToastType } from "./zustand/types";
 import Payment from "./components/pages/Payment";
+import { isCardExpired } from "./helpers/date";
 
 function App() {
   const name = localStorage.getItem("name");
@@ -23,6 +24,9 @@ function App() {
   const { text } = useToastStore((state) => state);
   const userQuery = useUser();
   const firstTime = userQuery?.data?.data?.firstTime;
+  const paymentIsExpired = userQuery?.data?.data?.paymentMethods.some(
+    (paymentMethod) => isCardExpired(paymentMethod.expiryDate)
+  );
 
   const { setToast } = useToastStore((state) => state);
 
@@ -80,7 +84,7 @@ function App() {
         }`}
       >
         <BrowserRouter>
-          <Navbar />
+          <Navbar paymentIsExpired={paymentIsExpired!} />
           <Routes>
             <Route path="/" element={<RedirectToHome />} />
             <Route path="/home" element={<ProductsContainer />} />

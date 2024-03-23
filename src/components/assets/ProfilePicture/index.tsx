@@ -40,9 +40,15 @@ function ProfilePicture({
         variables
       );
     },
+    onMutate: async () => {
+      setToast(ToastType.INFO, "Loading...");
+    },
     onSuccess: async () => {
       setToast(ToastType.SUCCESS, "Profile photo changed successfully");
       setModalDisplay && setModalDisplay(false);
+    },
+    onError: (error) => {
+      setToast(ToastType.ERROR, error.message);
     },
   });
 

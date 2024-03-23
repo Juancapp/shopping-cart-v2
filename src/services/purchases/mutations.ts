@@ -27,6 +27,7 @@ export const usePurchaseMutation = (userId: string | null) => {
             });
       return res;
     },
+    onMutate: () => setToast(ToastType.INFO, "Loading..."),
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
         queryKey: [["purchases", userId]],

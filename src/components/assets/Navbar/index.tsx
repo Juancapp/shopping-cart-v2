@@ -11,7 +11,7 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Ping from "../Ping";
 
-function Navbar() {
+function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
   const searchParams = useSearchParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -172,6 +172,10 @@ function Navbar() {
                         >
                           {item.name}
                           {item.name === "Documentation" && <Ping />}
+                          {item.name === "Payment methods" &&
+                            paymentIsExpired && (
+                              <div className="bg-red-600 rounded-full w-1 h-1 ml-1"></div>
+                            )}
                         </div>
                       ))}
                     </div>

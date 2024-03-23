@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../../../services/user/query";
 import PaymentInput from "./PaymentInput";
 import { isCardExpired } from "../../../helpers/date";
@@ -9,12 +9,15 @@ import {
 } from "../../../services/user/mutation";
 import { TrashIcon } from "@heroicons/react/20/solid";
 import Modal from "../../assets/Modal";
+import { useToastStore } from "../../../zustand/store";
+import { ToastType } from "../../../zustand/types";
 
 function Payment() {
   const userQuery = useUser();
   const userId = userQuery?.data?.data?._id;
   const [paymentInputs, setPaymentInputs] = useState<JSX.Element[]>([]);
   const [modalNumber, setModalNumber] = useState("");
+  const { setToast } = useToastStore((state) => state);
 
   const setToDefaultPaymentMethodMutation =
     useSetToDefaultPaymentMethodMutation();
@@ -46,6 +49,18 @@ function Payment() {
     ]);
   };
 
+  useEffect(() => {
+    if (setToDefaultPaymentMethodMutation.isPending) {
+      setToast(ToastType.INFO, "Loading...");
+    }
+  }, [setToDefaultPaymentMethodMutation.isPending]);
+
+  useEffect(() => {
+    if (deletePaymentMethod.isPending) {
+      setToast(ToastType.INFO, "Loading...");
+    }
+  }, [deletePaymentMethod.isPending]);
+
   return (
     <>
       {!!modalNumber.length && (
@@ -55,6 +70,7 @@ function Payment() {
             <Button
               variant={ButtonVariant.PRIMARY}
               onClick={() => setModalNumber("")}
+              disabled={deletePaymentMethod.isPending}
             >
               Cancel
             </Button>
@@ -68,6 +84,7 @@ function Payment() {
                   setModalNumber("");
                 }
               }}
+              disabled={deletePaymentMethod.isPending}
               variant={ButtonVariant.BLACK}
             >
               Confirm
@@ -92,7 +109,13 @@ function Payment() {
             <tbody className="text-gray-700">
               {paymentMethods?.map((paymentMethod, index) => (
                 <tr key={index} className="border-b">
-                  <td className="py-4 px-6">
+                  <td
+                    className={`${
+                      isCardExpired(paymentMethod.expiryDate)
+                        ? "text-red-600"
+                        : "text-black"
+                    } py-4 px-6`}
+                  >
                     **** **** **** {paymentMethod.number.slice(-4)}
                   </td>
                   <td
