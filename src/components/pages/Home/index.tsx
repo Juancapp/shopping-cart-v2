@@ -25,6 +25,8 @@ function ProductsContainer() {
     paramsObj[key] = value;
   }
 
+  console.log(paramsObj);
+
   const useUserQuery = useUser();
   const user = useUserQuery?.data?.data;
   const products = user?.products?.length ? user?.products : [];
@@ -33,7 +35,7 @@ function ProductsContainer() {
   const data = productsQuery?.data?.data;
   const { setToast } = useToastStore((state) => state);
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(parseInt(paramsObj.page) || 1);
 
   useEffect(() => {
     if (productsQuery?.isError) {
