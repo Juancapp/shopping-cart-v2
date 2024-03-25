@@ -3,7 +3,7 @@ import Searchbar from "../Searchbar";
 import { categoryOptions, orderOptions } from "./constants";
 import Radio from "../Radio";
 import { Category, Order, OrderBy } from "../../../types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Cart from "./assets/Cart";
 import NavMenu from "../NavMenu";
@@ -20,6 +20,8 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
   const orderByParam = queryParams.get("orderBy");
   const navigate = useNavigate();
   const name = localStorage.getItem("name");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [navigation, setNavigation] = useState([
     { name: "Home", href: "/home", current: location.pathname === "/home" },
@@ -71,19 +73,31 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
 
   const handleCategorySelect = (value: Category) => {
     setFilters((prevValue) => {
-      return { ...prevValue, category: value };
+      return {
+        ...prevValue,
+        category: value,
+        title: inputRef as unknown as string,
+      };
     });
   };
 
   const handleOrderSelect = (value: Order) => {
     setFilters((prevValue) => {
-      return { ...prevValue, order: value };
+      return {
+        ...prevValue,
+        order: value,
+        title: inputRef as unknown as string,
+      };
     });
   };
 
   const handleRadio = (value: OrderBy) => {
     setFilters((prevValue) => {
-      return { ...prevValue, orderBy: value };
+      return {
+        ...prevValue,
+        orderBy: value,
+        title: inputRef as unknown as string,
+      };
     });
   };
 
@@ -221,6 +235,7 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
           <Searchbar
             handleClick={handleSearch}
             initialValue={queryParams.get("title")!}
+            ref={inputRef}
           />
           <div className="flex flex-col justify-center gap-2 md:gap-0 items-center md:flex-row">
             <Select

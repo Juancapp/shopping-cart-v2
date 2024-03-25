@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
-function Searchbar(
-  props: React.HTMLProps<HTMLButtonElement> &
-    React.InputHTMLAttributes<HTMLInputElement> & {
-      handleClick: (arg0: string) => void;
-      initialValue: string;
-    }
-) {
+interface SearchbarProps {
+  handleClick: (arg0: string) => void;
+  initialValue: string;
+}
+
+const Searchbar = forwardRef<HTMLInputElement, SearchbarProps>((props, ref) => {
   const { handleClick, initialValue } = props;
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     if (initialValue) setInputValue(initialValue);
-  }, []);
+  }, [initialValue]);
 
   return (
     <div className="flex-1 flex">
@@ -22,6 +21,7 @@ function Searchbar(
         placeholder="Search product..."
         onChange={(e) => setInputValue(e.target.value)}
         value={inputValue}
+        ref={ref}
       />
       <button
         onClick={() => handleClick(inputValue)}
@@ -44,6 +44,6 @@ function Searchbar(
       </button>
     </div>
   );
-}
+});
 
 export default Searchbar;
