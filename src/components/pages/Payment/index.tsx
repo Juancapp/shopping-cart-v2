@@ -126,6 +126,9 @@ function Payment() {
                     } py-4 px-6`}
                   >
                     {paymentMethod.expiryDate}
+                    {isCardExpired(paymentMethod.expiryDate) && (
+                      <p className="text-[11px]">Expired</p>
+                    )}
                   </td>
                   <td className="py-4 px-6 flex gap-6 items-center">
                     <div>
