@@ -76,7 +76,7 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
       return {
         ...prevValue,
         category: value,
-        title: inputRef as unknown as string,
+        title: inputRef.current?.value as string,
       };
     });
   };
@@ -86,7 +86,7 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
       return {
         ...prevValue,
         order: value,
-        title: inputRef as unknown as string,
+        title: inputRef.current?.value as string,
       };
     });
   };
@@ -96,7 +96,7 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
       return {
         ...prevValue,
         orderBy: value,
-        title: inputRef as unknown as string,
+        title: inputRef.current?.value as string,
       };
     });
   };
