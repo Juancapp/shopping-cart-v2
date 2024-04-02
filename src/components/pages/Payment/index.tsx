@@ -107,72 +107,81 @@ function Payment() {
               </tr>
             </thead>
             <tbody className="text-gray-700">
-              {paymentMethods?.map((paymentMethod, index) => (
-                <tr key={index} className="border-b">
-                  <td
-                    className={`${
-                      isCardExpired(paymentMethod.expiryDate)
-                        ? "text-red-600"
-                        : "text-black"
-                    } py-4 px-6`}
-                  >
-                    **** **** **** {paymentMethod.number.slice(-4)}
-                  </td>
-                  <td
-                    className={`${
-                      isCardExpired(paymentMethod.expiryDate)
-                        ? "text-red-600"
-                        : "text-black"
-                    } py-4 px-6`}
-                  >
-                    {paymentMethod.expiryDate}
-                    {isCardExpired(paymentMethod.expiryDate) && (
-                      <p className="text-[11px]">Expired</p>
-                    )}
-                  </td>
-                  <td className="py-4 px-6 flex gap-6 items-center">
-                    <div>
-                      {paymentMethod.isDefault && (
-                        <p className="text-sm text-green-600">Default</p>
-                      )}
-                      <Button
-                        disabled={paymentMethod.isDefault}
-                        variant={
-                          paymentMethod.isDefault
-                            ? ButtonVariant.DISABLED
-                            : ButtonVariant.PRIMARY
-                        }
-                        onClick={() => {
-                          setToDefaultPaymentMethodMutation.mutate({
-                            _id: userId!,
-                            body: {
-                              number: paymentMethod.number,
-                              expiryDate: paymentMethod.expiryDate,
-                            },
-                          });
-                        }}
-                      >
-                        <p className="text-white text-sm">Set as default</p>
-                      </Button>
-                    </div>
-                    <button
-                      className="w-4 h-min"
-                      onClick={() => setModalNumber(paymentMethod.number)}
-                      disabled={
-                        paymentMethod.isDefault && paymentMethods.length !== 1
-                      }
+              {userQuery?.isLoading ? (
+                <p>Loading...</p>
+              ) : userQuery?.isError ? (
+                <p>{userQuery?.error.message}</p>
+              ) : !paymentMethods?.length ? (
+                <p>There are not payment methods yet</p>
+              ) : (
+                paymentMethods?.map((paymentMethod, index) => (
+                  <tr key={index} className="border-b">
+                    <td
+                      className={`${
+                        isCardExpired(paymentMethod.expiryDate)
+                          ? "text-red-600"
+                          : "text-black"
+                      } py-4 px-6`}
                     >
-                      <TrashIcon
-                        className={`${
+                      **** **** **** {paymentMethod.number.slice(-4)}
+                    </td>
+                    <td
+                      className={`${
+                        isCardExpired(paymentMethod.expiryDate)
+                          ? "text-red-600"
+                          : "text-black"
+                      } py-4 px-6`}
+                    >
+                      {paymentMethod.expiryDate}
+                      {isCardExpired(paymentMethod.expiryDate) && (
+                        <p className="text-[11px]">Expired</p>
+                      )}
+                    </td>
+                    <td className="py-4 px-6 flex gap-6 items-center">
+                      <div>
+                        {paymentMethod.isDefault && (
+                          <p className="text-sm text-green-600">Default</p>
+                        )}
+                        <Button
+                          disabled={paymentMethod.isDefault}
+                          variant={
+                            paymentMethod.isDefault
+                              ? ButtonVariant.DISABLED
+                              : ButtonVariant.PRIMARY
+                          }
+                          onClick={() => {
+                            setToDefaultPaymentMethodMutation.mutate({
+                              _id: userId!,
+                              body: {
+                                number: paymentMethod.number,
+                                expiryDate: paymentMethod.expiryDate,
+                              },
+                            });
+                          }}
+                        >
+                          <p className="text-white text-sm">Set as default</p>
+                        </Button>
+                      </div>
+                      <button
+                        className="w-4 h-min"
+                        onClick={() => setModalNumber(paymentMethod.number)}
+                        disabled={
                           paymentMethod.isDefault && paymentMethods.length !== 1
-                            ? "text-gray-300"
-                            : "text-gray-600"
-                        }  w-4`}
-                      />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                        }
+                      >
+                        <TrashIcon
+                          className={`${
+                            paymentMethod.isDefault &&
+                            paymentMethods.length !== 1
+                              ? "text-gray-300"
+                              : "text-gray-600"
+                          }  w-4`}
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

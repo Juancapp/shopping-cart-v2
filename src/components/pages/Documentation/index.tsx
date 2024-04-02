@@ -13,7 +13,41 @@ function Documentation() {
 
   return (
     <div className="w-full px-4 py-10 flex flex-col md:items-center ">
-      <h1 className="text-4xl font-bold mb-8 text-center">Technologies Used</h1>
+      <div className="mb-8 text-center">
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-bold">Contact</h1>
+          <div className="flex justify-center space-x-4">
+            <a
+              href="https://github.com/tu_usuario"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/images/github.png" alt="GitHub" className="w-8 h-8" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/tu_usuario/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/images/linkedin.png"
+                alt="LinkedIn"
+                className="w-8 h-8"
+              />
+            </a>
+          </div>
+        </div>
+        <h1 className="text-2xl font-bold">Backend repository</h1>
+        <a
+          href="https://github.com/Juancapp"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-700 font-semibold hover:underline"
+        >
+          Click here to view the backend repository on GitHub
+        </a>
+      </div>
+      <h1 className="text-4xl font-bold mb-8 text-center">Technologies used</h1>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col items-center justify-center mb-12 md:w-1/4 mx-auto">
         <img
           src="/images/typescript.png"
@@ -29,7 +63,7 @@ function Documentation() {
       </div>
       <div className="mb-12">
         <h2 className="text-3xl font-bold mb-4 text-center">
-          Front-end Technologies
+          Front-end technologies
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col items-center justify-center">
@@ -89,7 +123,7 @@ function Documentation() {
       </div>
       <div>
         <h2 className="text-3xl font-bold mb-4 text-center">
-          Back-end Technologies
+          Back-end technologies
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col items-center justify-center">

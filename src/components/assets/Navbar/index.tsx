@@ -144,7 +144,7 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
   }
 
   return (
-    <div className="bg-gray-900 flex flex-col gap-2 pb-5 px-4">
+    <div className="bg-gray-900 flex flex-col gap-2 px-4">
       <Disclosure as="nav" className="bg-inherit">
         {({ open }) => (
           <>
@@ -237,7 +237,7 @@ function Navbar({ paymentIsExpired }: { paymentIsExpired: boolean }) {
             initialValue={queryParams.get("title")!}
             ref={inputRef}
           />
-          <div className="flex flex-col justify-center gap-2 md:gap-0 items-center md:flex-row">
+          <div className="flex flex-col justify-center gap-2 md:gap-0 pb-5 items-center md:flex-row">
             <Select
               label="Category"
               name="category"
