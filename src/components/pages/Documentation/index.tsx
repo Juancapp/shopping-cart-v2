@@ -14,38 +14,36 @@ function Documentation() {
   return (
     <div className="w-full px-4 py-10 flex flex-col md:items-center ">
       <div className="mb-8 text-center">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold">Contact</h1>
-          <div className="flex justify-center space-x-4">
-            <a
-              href="https://github.com/tu_usuario"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="/images/github.png" alt="GitHub" className="w-8 h-8" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/tu_usuario/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="/images/linkedin.png"
-                alt="LinkedIn"
-                className="w-8 h-8"
-              />
-            </a>
-          </div>
-        </div>
-        <h1 className="text-2xl font-bold">Backend repository</h1>
+        <h1 className="text-2xl font-bold">Backend Repository</h1>
         <a
-          href="https://github.com/Juancapp"
+          href="https://github.com/Juancapp/shopping-cart-server-v2"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-700 font-semibold hover:underline"
+          className="text-blue-700 hover:underline"
         >
           Click here to view the backend repository on GitHub
         </a>
+      </div>
+      <div className="mb-8 text-center">
+        <h1 className="text-2xl font-bold">Contact</h1>
+        <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
+          <a
+            href="https://github.com/Juancapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 hover:underline"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/jandrescappuccio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 hover:underline"
+          >
+            LinkedIn
+          </a>
+        </div>
       </div>
       <h1 className="text-4xl font-bold mb-8 text-center">Technologies used</h1>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col items-center justify-center mb-12 md:w-1/4 mx-auto">
@@ -169,15 +167,14 @@ function Documentation() {
           </div>
           <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col items-center justify-center">
             <img
-              src="/images/mongoose.png"
-              alt="mongoose"
-              className="w-24 h-auto mb-4"
+              src="/images/awss3.png"
+              alt="aws s3"
+              className="w-20 h-auto mb-4"
             />
             <div className="p-4 text-center">
-              <h3 className="text-lg font-semibold mb-2">Mongoose</h3>
+              <h3 className="text-lg font-semibold mb-2">AWS S3</h3>
               <p className="text-gray-600">
-                An elegant MongoDB object modeling tool designed to work in an
-                asynchronous environment.
+                A scalable object storage service for data archiving and backup.
               </p>
             </div>
           </div>
