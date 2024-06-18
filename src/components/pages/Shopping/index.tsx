@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUser } from "../../../services/user/query";
 import ProductCard from "./ProductCard";
 import Button, { ButtonVariant } from "../../assets/Button";
