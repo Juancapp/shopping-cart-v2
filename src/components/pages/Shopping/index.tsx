@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "../../../services/user/query";
 import ProductCard from "./ProductCard";
 import Button, { ButtonVariant } from "../../assets/Button";
@@ -47,6 +47,10 @@ function Shopping() {
       await queryClient.invalidateQueries({
         queryKey: ["user"],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ["postPurchase"],
+      });
+      navigate("/purchases");
       setModalDisplay(false);
       setToast(ToastType.SUCCESS, "Products successfully purchased!");
     },
@@ -97,10 +101,10 @@ function Shopping() {
   };
 
   useEffect(() => {
-    if (totalQuantity === 0) {
+    if (totalQuantity === 0 && location.pathname !== "/purchases") {
       navigate("/home");
     }
-  }, [totalQuantity]);
+  }, [totalQuantity, location.pathname]);
 
   const isNumber = /^[0-9]*$/;
   const inputNotValidLength =
