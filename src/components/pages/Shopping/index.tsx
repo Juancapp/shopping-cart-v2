@@ -49,6 +49,7 @@ function Shopping() {
       });
       setModalDisplay(false);
       setToast(ToastType.SUCCESS, "Products successfully purchased!");
+      navigate("/purchases");
     },
 
     onError: async (error) => {
